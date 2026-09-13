@@ -1,4 +1,7 @@
-# Example — Async Recovery
+# Example Finding Format — Async Recovery
+
+> [!NOTE]
+> This document is a non-executable documentation example illustrating how Missing Piece formats hypothetical audit findings. It is purely illustrative and does not reflect any software defect in this package.
 
 ## Observed
 

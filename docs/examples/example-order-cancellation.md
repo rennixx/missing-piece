@@ -1,4 +1,7 @@
-# Example — Order Cancellation
+# Example Finding Format — Order Cancellation
+
+> [!NOTE]
+> This document is a non-executable documentation example illustrating how Missing Piece formats hypothetical audit findings. It is purely illustrative and does not reflect any software defect in this package.
 
 ## Observed repository model
 

@@ -29,10 +29,10 @@
 - `docs/SECURITY_PRIVACY.md`
 - `docs/TEST_STRATEGY.md`
 - `docs/USER_FLOWS_AND_COMMANDS.md`
+- `docs/examples/example-async-recovery.md`
+- `docs/examples/example-false-positive.md`
+- `docs/examples/example-order-cancellation.md`
 - `skills/missing-piece/SKILL.md`
-- `skills/missing-piece/examples/example-async-recovery.md`
-- `skills/missing-piece/examples/example-false-positive.md`
-- `skills/missing-piece/examples/example-order-cancellation.md`
 - `skills/missing-piece/references/confidence.md`
 - `skills/missing-piece/references/counter-evidence.md`
 - `skills/missing-piece/references/data-operations.md`
