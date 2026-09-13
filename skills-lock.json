@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "missing-piece": {
+      "source": "./skills/missing-piece",
+      "sourceType": "local",
+      "computedHash": "1d1c0cb2bd5c3ab8c1520b1868630277962113a57153c1a877162f9668da0b80"
+    }
+  }
+}

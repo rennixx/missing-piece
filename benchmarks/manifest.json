@@ -1,0 +1,245 @@
+{
+  "version": "1.0.0",
+  "name": "Missing Piece Benchmark Suite",
+  "description": "Ground truth evaluation corpus for validating absent-but-implied software behavior detection.",
+  "scenarios": [
+    {
+      "id": "lc_upload_no_delete",
+      "detector_family": "MP-LC",
+      "type": "positive",
+      "path": "benchmarks/fixtures/mp_lc/positive_upload_no_delete",
+      "expected_omission": "File upload endpoint stores user files, but no file deletion or asset cleanup path exists.",
+      "expected_confidence": "High",
+      "expected_severity": "Medium"
+    },
+    {
+      "id": "lc_upload_with_delete",
+      "detector_family": "MP-LC",
+      "type": "negative",
+      "path": "benchmarks/fixtures/mp_lc/negative_upload_with_delete",
+      "expected_omission": null
+    },
+    {
+      "id": "lc_immutable_audit_log",
+      "detector_family": "MP-LC",
+      "type": "exception",
+      "path": "benchmarks/fixtures/mp_lc/exception_immutable_audit",
+      "expected_omission": null
+    },
+    {
+      "id": "lc_disguised_cleanup",
+      "detector_family": "MP-LC",
+      "type": "disguised",
+      "path": "benchmarks/fixtures/mp_lc/disguised_purge_worker",
+      "expected_omission": null
+    },
+    {
+      "id": "st_pending_no_timeout",
+      "detector_family": "MP-ST",
+      "type": "positive",
+      "path": "benchmarks/fixtures/mp_st/positive_pending_no_timeout",
+      "expected_omission": "Orders in PENDING state can transition to PAID, but no cancellation timeout path exists for abandoned orders.",
+      "expected_confidence": "High",
+      "expected_severity": "High"
+    },
+    {
+      "id": "st_pending_with_timeout",
+      "detector_family": "MP-ST",
+      "type": "negative",
+      "path": "benchmarks/fixtures/mp_st/negative_pending_with_timeout",
+      "expected_omission": null
+    },
+    {
+      "id": "sy_grant_no_revoke",
+      "detector_family": "MP-SY",
+      "type": "positive",
+      "path": "benchmarks/fixtures/mp_sy/positive_grant_no_revoke",
+      "expected_omission": "API implements grant_role to assign user privileges, but lacks a revoke_role counterpart.",
+      "expected_confidence": "High",
+      "expected_severity": "High"
+    },
+    {
+      "id": "sy_grant_and_revoke",
+      "detector_family": "MP-SY",
+      "type": "negative",
+      "path": "benchmarks/fixtures/mp_sy/negative_grant_and_revoke",
+      "expected_omission": null
+    },
+    {
+      "id": "mg_admin_no_auth",
+      "detector_family": "MP-MG",
+      "type": "positive",
+      "path": "benchmarks/fixtures/mp_mg/positive_admin_no_auth",
+      "expected_omission": "Admin mutation endpoint perform_user_purge lacks authentication and permission guards.",
+      "expected_confidence": "High",
+      "expected_severity": "Critical"
+    },
+    {
+      "id": "mg_admin_with_auth",
+      "detector_family": "MP-MG",
+      "type": "negative",
+      "path": "benchmarks/fixtures/mp_mg/negative_admin_with_auth",
+      "expected_omission": null
+    },
+    {
+      "id": "se_cancel_no_inventory",
+      "detector_family": "MP-SE",
+      "type": "positive",
+      "path": "benchmarks/fixtures/mp_se/positive_cancel_no_inventory",
+      "expected_omission": "Order cancellation updates order status but fails to unreserve/restore inventory.",
+      "expected_confidence": "High",
+      "expected_severity": "High"
+    },
+    {
+      "id": "se_cancel_with_inventory",
+      "detector_family": "MP-SE",
+      "type": "negative",
+      "path": "benchmarks/fixtures/mp_se/negative_cancel_with_inventory",
+      "expected_omission": null
+    },
+    {
+      "id": "fr_webhook_no_idempotency",
+      "detector_family": "MP-FR",
+      "type": "positive",
+      "path": "benchmarks/fixtures/mp_fr/positive_webhook_no_idempotency",
+      "expected_omission": "Payment webhook receiver processes events without idempotency verification, risking duplicate charges.",
+      "expected_confidence": "High",
+      "expected_severity": "High"
+    },
+    {
+      "id": "fr_webhook_with_idempotency",
+      "detector_family": "MP-FR",
+      "type": "negative",
+      "path": "benchmarks/fixtures/mp_fr/negative_webhook_with_idempotency",
+      "expected_omission": null
+    },
+    {
+      "id": "oc_user_delete_orphans",
+      "detector_family": "MP-OC",
+      "type": "positive",
+      "path": "benchmarks/fixtures/mp_oc/positive_user_delete_orphans",
+      "expected_omission": "User account deletion removes user row but leaves associated user file uploads orphaned in storage.",
+      "expected_confidence": "High",
+      "expected_severity": "Medium"
+    },
+    {
+      "id": "oc_user_delete_cascades",
+      "detector_family": "MP-OC",
+      "type": "negative",
+      "path": "benchmarks/fixtures/mp_oc/negative_user_delete_cascades",
+      "expected_omission": null
+    },
+    {
+      "id": "au_new_endpoint_unprotected",
+      "detector_family": "MP-AU",
+      "type": "positive",
+      "path": "benchmarks/fixtures/mp_au/positive_endpoint_unprotected",
+      "expected_omission": "Export endpoint added to router but omitted from permissions matrix.",
+      "expected_confidence": "High",
+      "expected_severity": "High"
+    },
+    {
+      "id": "au_new_endpoint_protected",
+      "detector_family": "MP-AU",
+      "type": "negative",
+      "path": "benchmarks/fixtures/mp_au/negative_endpoint_protected",
+      "expected_omission": null
+    },
+    {
+      "id": "as_producer_no_recovery",
+      "detector_family": "MP-AS",
+      "type": "positive",
+      "path": "benchmarks/fixtures/mp_as/positive_queue_no_recovery",
+      "expected_omission": "Queue worker processes jobs without retry limits or dead-letter queue fallback.",
+      "expected_confidence": "High",
+      "expected_severity": "High"
+    },
+    {
+      "id": "as_producer_with_recovery",
+      "detector_family": "MP-AS",
+      "type": "negative",
+      "path": "benchmarks/fixtures/mp_as/negative_queue_with_recovery",
+      "expected_omission": null
+    },
+    {
+      "id": "op_env_missing_config",
+      "detector_family": "MP-OP",
+      "type": "positive",
+      "path": "benchmarks/fixtures/mp_op/positive_env_missing",
+      "expected_omission": "Required ANALYTICS_DB_URL referenced in code but missing from environment configuration schema and .env.example.",
+      "expected_confidence": "High",
+      "expected_severity": "Medium"
+    },
+    {
+      "id": "op_env_validated_config",
+      "detector_family": "MP-OP",
+      "type": "negative",
+      "path": "benchmarks/fixtures/mp_op/negative_env_validated",
+      "expected_omission": null
+    },
+    {
+      "id": "dc_counter_no_decrement",
+      "detector_family": "MP-DC",
+      "type": "positive",
+      "path": "benchmarks/fixtures/mp_dc/positive_counter_no_decrement",
+      "expected_omission": "User posts_count denormalized aggregate is incremented on post creation but never decremented on post deletion.",
+      "expected_confidence": "High",
+      "expected_severity": "Medium"
+    },
+    {
+      "id": "dc_counter_with_decrement",
+      "detector_family": "MP-DC",
+      "type": "negative",
+      "path": "benchmarks/fixtures/mp_dc/negative_counter_with_decrement",
+      "expected_omission": null
+    },
+    {
+      "id": "ct_enum_unhandled",
+      "detector_family": "MP-CT",
+      "type": "positive",
+      "path": "benchmarks/fixtures/mp_ct/positive_enum_unhandled",
+      "expected_omission": "PaymentStatus enum includes REFUNDED but dispatch handler omits handling REFUNDED state.",
+      "expected_confidence": "High",
+      "expected_severity": "Medium"
+    },
+    {
+      "id": "ct_enum_handled",
+      "detector_family": "MP-CT",
+      "type": "negative",
+      "path": "benchmarks/fixtures/mp_ct/negative_enum_handled",
+      "expected_omission": null
+    },
+    {
+      "id": "cf_optional_integration_crash",
+      "detector_family": "MP-CF",
+      "type": "positive",
+      "path": "benchmarks/fixtures/mp_cf/positive_config_crash",
+      "expected_omission": "Optional integration crashes at startup when SLACK_WEBHOOK_URL config is omitted.",
+      "expected_confidence": "High",
+      "expected_severity": "Medium"
+    },
+    {
+      "id": "cf_optional_integration_fallback",
+      "detector_family": "MP-CF",
+      "type": "negative",
+      "path": "benchmarks/fixtures/mp_cf/negative_config_fallback",
+      "expected_omission": null
+    },
+    {
+      "id": "ob_unmonitored_settlement_failure",
+      "detector_family": "MP-OB",
+      "type": "positive",
+      "path": "benchmarks/fixtures/mp_ob/positive_settlement_no_alert",
+      "expected_omission": "Asynchronous settlement batch worker drops failed transaction processing silently without emitting metrics, alerts, or dead-letter visibility.",
+      "expected_confidence": "High",
+      "expected_severity": "High"
+    },
+    {
+      "id": "ob_monitored_settlement_failure",
+      "detector_family": "MP-OB",
+      "type": "negative",
+      "path": "benchmarks/fixtures/mp_ob/negative_settlement_with_alert",
+      "expected_omission": null
+    }
+  ]
+}
