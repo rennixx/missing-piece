@@ -8,15 +8,17 @@
 
 [![GitHub Release](https://img.shields.io/github/v/release/rennixx/missing-piece?color=6366f1&label=release)](https://github.com/rennixx/missing-piece/releases)
 [![License: MIT](https://img.shields.io/badge/license-MIT-emerald.svg)](LICENSE)
-[![Agent Skills Compatible](https://img.shields.io/badge/agent--skills-compatible-8b5cf6)](https://skills.sh/)
-[![Benchmark Suite](https://img.shields.io/badge/benchmarks-30%2F30%20passing-22c55e)](benchmarks/)
+[![Skills Suite](https://img.shields.io/badge/suite-10%20skills-8b5cf6)](skills/)
+[![Detector Families](https://img.shields.io/badge/detectors-14%20families-3b82f6)](docs/DETECTOR_CATALOG.md)
+[![Benchmark Suite](https://img.shields.io/badge/benchmarks-43%2F43%20passing-22c55e)](benchmarks/)
 [![Precision](https://img.shields.io/badge/precision-100%25-success)](benchmarks/)
-[![False Positive Rate](https://img.shields.io/badge/FPR-0.0%25-3b82f6)](benchmarks/)
+[![False Positive Rate](https://img.shields.io/badge/FPR-0.0%25-blue)](benchmarks/)
 
 <br/>
 
 <p align="center">
   <a href="#-quickstart">Quickstart</a> •
+  <a href="#-sub-skills-suite">Sub-Skills Suite</a> •
   <a href="#-the-problem">The Problem</a> •
   <a href="#-core-thesis">Core Thesis</a> •
   <a href="#-execution-modes">Execution Modes</a> •
@@ -32,13 +34,16 @@
 
 ## ⚡ Quickstart
 
-Install directly into any repository using the standard Agent Skills CLI:
+Install directly into any project or workspace using the standard Agent Skills CLI:
 
 ```bash
-# Add to your current project
+# Install core Missing Piece auditor into your current project
 npx skills add rennixx/missing-piece
 
-# Or install globally for all your AI agents
+# Or install the entire 10-skill suite at once
+npx skills add rennixx/missing-piece --all
+
+# Or install globally for all your AI coding agents
 npx skills add rennixx/missing-piece -g
 
 # Or target specific agents (Claude Code, Cursor, Codex, Antigravity)
@@ -47,41 +52,40 @@ npx skills add rennixx/missing-piece -g -a claude-code cursor codex
 
 ### Prompt Your Agent
 
-Once installed, invoke Missing Piece with natural language inside your agent chat:
+Once installed, invoke Missing Piece directly inside your agent conversation:
 
 ```text
 "Audit this repository with Missing Piece for forgotten lifecycle and cleanup flows."
-"Review my recent changes for missing counterparts before I merge."
-"Audit only authentication and authorization permissions in /api."
+"Review my recent changes with missing-piece-pr before I merge."
+"Audit our Stripe webhook handlers and checkout flow with missing-piece-payments."
+"Fix the missing counterpart findings with missing-piece-complete."
 ```
 
 ---
 
 ## 📦 Sub-Skills Suite
 
-Missing Piece is distributed as an extensible suite of **10 specialized skills**. Install individual skills with `--skill <name>` or install all of them at once with `--all`:
+Missing Piece is architected as an extensible suite of **10 specialized skills**. You can install individual skills with `--skill <name>` or install the entire suite with `--all`:
 
 ```bash
 # Install specific sub-skills
-npx skills add rennixx/missing-piece --skill missing-piece-pr
 npx skills add rennixx/missing-piece --skill missing-piece-complete
-
-# Or install the entire 10-skill suite
-npx skills add rennixx/missing-piece --all
+npx skills add rennixx/missing-piece --skill missing-piece-pr
+npx skills add rennixx/missing-piece --skill missing-piece-payments
 ```
 
-| Category | Skill Name | Focus & Purpose |
-|---|---|---|
-| **Core** | [`missing-piece`](skills/missing-piece) | Full repository general audit across all 14 detector families in read-only mode. |
-| **Workflow** | [`missing-piece-complete`](skills/missing-piece-complete) | Safe remediation engine: implements missing counterparts for accepted audit findings. |
-| **Workflow** | [`missing-piece-pr`](skills/missing-piece-pr) | Pre-merge delta auditor for Git diffs, pull requests, and staged commits. |
-| **Workflow** | [`missing-piece-spec`](skills/missing-piece-spec) | Reconciles OpenAPI, GraphQL, and database schemas against active implementation. |
-| **Domain Pack** | [`missing-piece-payments`](skills/missing-piece-payments) | Deep auditor for Stripe, webhooks, checkout flows, refunds, and dunning retries. |
-| **Domain Pack** | [`missing-piece-auth`](skills/missing-piece-auth) | Deep auditor for IAM, session invalidation on reset, multi-tenant scoping, and RBAC. |
-| **Domain Pack** | [`missing-piece-async`](skills/missing-piece-async) | Deep auditor for queue workers, DLQs, poison pills, distributed locks, and schedulers. |
-| **Framework** | [`missing-piece-nextjs`](skills/missing-piece-nextjs) | Next.js App Router, Server Actions, route handlers, cache revalidation, streaming. |
-| **Framework** | [`missing-piece-django`](skills/missing-piece-django) | Django models, signal symmetries, `transaction.atomic` blocks, Celery hooks. |
-| **Framework** | [`missing-piece-rails`](skills/missing-piece-rails) | Ruby on Rails ActiveRecord cascades, `after_commit` callbacks, Sidekiq retries. |
+| Category | Skill | Focus & Capabilities | Example Prompt |
+|---|---|---|---|
+| **Core** | [`missing-piece`](skills/missing-piece) | Full repository auditor across all 14 detector families in read-only mode. | *"Audit this repo for missing counterparts."* |
+| **Workflow** | [`missing-piece-complete`](skills/missing-piece-complete) | Safe remediation engine: implements missing counterparts for accepted audit findings. | *"Safely implement the missing counterparts found in our audit."* |
+| **Workflow** | [`missing-piece-pr`](skills/missing-piece-pr) | Pre-merge delta gatekeeper: audits PR diffs, branch deltas, and staged git commits. | *"Run a Missing Piece check on my PR branch before merge."* |
+| **Workflow** | [`missing-piece-spec`](skills/missing-piece-spec) | Contract reconciler: verifies OpenAPI, GraphQL, and DB schemas against actual code. | *"Check if our OpenAPI spec matches our routes and fields."* |
+| **Domain Pack** | [`missing-piece-payments`](skills/missing-piece-payments) | Deep financial flow auditor: Stripe webhooks, checkout flows, refunds, dunning retries. | *"Audit our billing, refund, and webhook handling flows."* |
+| **Domain Pack** | [`missing-piece-auth`](skills/missing-piece-auth) | Deep IAM & session auditor: token revocation on password reset, tenant isolation, RBAC. | *"Audit session invalidation on password reset and role changes."* |
+| **Domain Pack** | [`missing-piece-async`](skills/missing-piece-async) | Deep async auditor: queue workers, DLQs, distributed locks, schedulers, poison pills. | *"Audit our background jobs and worker retry policies."* |
+| **Framework** | [`missing-piece-nextjs`](skills/missing-piece-nextjs) | Next.js App Router auditor: Server Actions, route handlers, cache revalidation tags. | *"Audit Server Actions and cache tags in this Next.js app."* |
+| **Framework** | [`missing-piece-django`](skills/missing-piece-django) | Django & DRF auditor: model signals, `transaction.atomic` blocks, Celery hooks. | *"Audit Django signals and atomic transaction boundaries."* |
+| **Framework** | [`missing-piece-rails`](skills/missing-piece-rails) | Ruby on Rails auditor: ActiveRecord cascades (`dependent: :destroy`), Sidekiq retries. | *"Audit Rails associations and after_commit callback symmetries."* |
 
 ---
 
@@ -89,53 +93,60 @@ npx skills add rennixx/missing-piece --all
 
 Most developer tools reason exclusively over code that **already exists**:
 
-* 🔍 **Linters** critique syntax and local conventions in written code.
-* 🧪 **Unit tests** exercise paths that someone remembered to write.
+* 🔍 **Linters** critique syntax and local style in written code.
+* 🧪 **Unit tests** exercise execution paths that someone remembered to write.
 * 🛡️ **SAST & security scanners** trace existing dataflows and callgraphs.
-* 👥 **Code reviewers** review visible lines inside the pull request diff.
+* 👥 **Code reviewers** inspect visible lines inside pull request diffs.
 
 Yet the most insidious production defects come from **absence**:
-* An allocation exists, but no release or deprovision path was ever created.
-* An order state transitions to `PENDING`, but has no timeout transition for abandoned checkouts.
+
+* An allocation exists, but no deprovision or cleanup path was ever created.
+* An order transitions to `PENDING`, but lacks a timeout transition for abandoned checkouts.
 * A sensitive mutation endpoint is added to the router, but omitted from the RBAC policy matrix.
-* A user account is deleted, but related user uploads remain orphaned in storage forever.
-* A webhook consumer processes Stripe events, but lacks idempotency deduplication.
+* A user account is deleted, but uploaded avatar files remain orphaned in S3 storage forever.
+* A webhook consumer processes payment events, but lacks idempotency deduplication.
 * A denormalized aggregate counter is incremented on creation, but never decremented on deletion.
 
-> **These defects compile cleanly, pass existing tests, and slip through standard code reviews because no individual line is broken—the critical flaw is the piece that isn't there.**
+> **These omissions compile cleanly, pass existing tests, and slip past code reviews because no individual line is broken—the critical flaw is the piece that isn't there.**
 
 ---
 
 ## 🧠 Core Thesis
 
-Software contains **implied structure**. Observed capabilities create concrete logical expectations:
+Software contains **implied structure**. Observed system capabilities create concrete logical expectations:
 
 ```text
-Observed System Fact ─────────────► Implication Rule ─────────────► Expected Counterpart
-  (e.g., file upload)                 (finite storage)                (cleanup/deletion)
-           │                                                                  │
-           ▼                                                                  ▼
-Counter-Evidence Attempt ◄──────── Broad Semantic Search ◄──────── Verified Reachability
-  (framework cascades?                (symbols, routes,               (is caller active?)
-   external services?                  events, configs)
-   intentional append-only?)
-           │
-           ▼
-Deterministic Report ─────────────► Concrete Verification ────────► Remediation
-  (observed, gap, why,                (fastest shell/code             (actionable fix)
-   confidence, severity)               check for human)
+┌─────────────────────────┐         ┌─────────────────────────┐         ┌─────────────────────────┐
+│  Observed System Fact   │────────►│    Implication Rule     │────────►│   Expected Counterpart  │
+│  (e.g., file upload)    │         │    (finite storage)     │         │   (cleanup/deletion)    │
+└─────────────────────────┘         └─────────────────────────┘         └─────────────────────────┘
+             │                                                                       │
+             ▼                                                                       ▼
+┌─────────────────────────┐         ┌─────────────────────────┐         ┌─────────────────────────┐
+│ Counter-Evidence Search │◄────────│  Broad Semantic Search  │◄────────│  Reachability Analysis  │
+│ (framework cascades?    │         │  (symbols, routes,      │         │  (is caller active?)    │
+│  external ownership?    │         │   events, configs)      │         │                         │
+│  intentional exception?)│         │                         │         │                         │
+└─────────────────────────┘         └─────────────────────────┘         └─────────────────────────┘
+             │
+             ▼
+┌─────────────────────────┐         ┌─────────────────────────┐         ┌─────────────────────────┐
+│  Deterministic Report   │────────►│  Concrete Verification  │────────►│   Safe Remediation      │
+│  (observed, gap, why,   │         │  (fastest shell/code    │         │  (missing-piece-        │
+│   confidence, severity) │         │   check for human)      │         │   complete engine)      │
+└─────────────────────────┘         └─────────────────────────┘         └─────────────────────────┘
 ```
 
 ### Non-Negotiable Invariants
 
 To eliminate generic linter spam and hallucinated style advice, Missing Piece operates under a strict contract:
 
-1. **Observed Repository Fact** — Must cite concrete lines of existing code or schemas.
+1. **Observed Repository Fact** — Must cite concrete lines of existing code, models, or schemas.
 2. **Implication Rule** — Must articulate why the observed fact logically implies a counterpart.
-3. **Expected Counterpart** — Must specify the exact function, endpoint, or guard expected.
-4. **Broad Evidence Search** — Searches across symbols, callers, middleware, routes, events, and configs.
-5. **Counter-Evidence Disproof** — Actively attempts to disprove absence (checking framework features, external ownership, intentional irreversibility, or non-obvious naming).
-6. **Conclusion of Gap** — Validates true absence, unreachability, or inconsistency.
+3. **Expected Counterpart** — Must specify the exact function, endpoint, transition, or guard expected.
+4. **Broad Evidence Search** — Searches semantically across symbols, callers, middleware, routes, events, and configs.
+5. **Counter-Evidence Disproof** — Actively attempts to disprove absence (checking framework features, external ownership, intentional irreversibility, or non-standard naming).
+6. **Conclusion of Gap** — Emits findings only after proving absence, unreachability, or inconsistency.
 7. **Separate Confidence & Severity** — High certainty is never conflated with high impact.
 8. **Verification Guidance** — Delivers a falsifiable verification step for the developer.
 
@@ -145,7 +156,7 @@ To eliminate generic linter spam and hallucinated style advice, Missing Piece op
 
 Missing Piece automatically infers the desired audit mode from your prompt:
 
-| Mode | Command / Prompt Pattern | Scope & Behavior |
+| Mode | Trigger Prompt Pattern | Scope & Behavior |
 |---|---|---|
 | **Standard Audit** *(Default)* | `"Audit this repo for missing behavior"` | High-precision scan emitting only High-confidence findings. |
 | **Focused Audit** | `"Audit permissions in /api with Missing Piece"` | Restricts investigation to a specific feature, folder, or detector family (e.g. `MP-AU`, `MP-LC`). |
@@ -157,7 +168,7 @@ Missing Piece automatically infers the desired audit mode from your prompt:
 
 ## 🛡️ 14 Detector Families
 
-Missing Piece evaluates systems across 14 dedicated reasoning families:
+Missing Piece evaluates software systems across 14 dedicated reasoning families:
 
 | Code | Family | Focus Area | Canonical Implication |
 |:---:|---|---|---|
@@ -180,7 +191,7 @@ Missing Piece evaluates systems across 14 dedicated reasoning families:
 
 ## 📋 Example Finding
 
-Here is an example of a reportable finding emitted by Missing Piece:
+Every reportable finding emitted by Missing Piece adheres to the deterministic schema:
 
 ```markdown
 ### MP-SE-001 — Order Cancellation Omits Inventory Restoration
@@ -229,15 +240,27 @@ or publish an `OrderCancelledEvent` consumed by the inventory worker.
 Missing Piece includes a rigorous evaluation harness with ground-truth test repositories covering all 14 detector families across **positive**, **negative**, **exception**, and **disguised** scenarios:
 
 ```bash
-# Validate skill package, frontmatter, references, and manifest coverage
+# 1. Validate skill package integrity, frontmatter, and detector references
 python scripts/validate_skill.py
 
-# Generate synthetic benchmark fixture codebases
+# 2. Generate synthetic benchmark fixture codebases
 python scripts/generate_fixtures.py
 
-# Run the benchmark evaluation harness
+# 3. Run the benchmark evaluation harness
 python scripts/run_benchmark.py
 ```
+
+### Benchmark Corpus Breakdown
+
+The benchmark corpus contains **43 ground-truth scenarios** designed to verify true omission detection while penalizing false positives:
+
+| Scenario Type | Count | Purpose | Evaluation Target |
+|---|:---:|---|---|
+| **Positive Fixtures** | **14** | Genuine omissions across all 14 detector families. | **100% Detected** (Recall = 1.0) |
+| **Negative Fixtures** | **14** | Matched controls where counterpart explicitly exists. | **100% Suppressed** (0 False Positives) |
+| **Exception Fixtures** | **7** | Intentional absences (append-only logs, public probes). | **100% Suppressed** (Recognizes Intent) |
+| **Disguised Fixtures** | **8** | Counterparts under non-standard naming, event buses, or DB triggers. | **100% Suppressed** (Avoids Naming Traps) |
+| **Total Corpus** | **43** | Comprehensive ground-truth evaluation suite. | **100% Precision / 0.0% FPR** |
 
 ### Verified Benchmark Metrics
 
