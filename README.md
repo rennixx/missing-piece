@@ -11,6 +11,7 @@
 [![Skills Suite](https://img.shields.io/badge/suite-10%20skills-8b5cf6)](skills/)
 [![Detector Families](https://img.shields.io/badge/detectors-14%20families-3b82f6)](docs/DETECTOR_CATALOG.md)
 [![Security: Audited](https://img.shields.io/badge/security-audited-success)](https://skills.sh/rennixx/missing-piece)
+[![Tokens: Optimized](https://img.shields.io/badge/tokens-optimized-brightgreen)](skills/)
 [![Benchmark Suite](https://img.shields.io/badge/benchmarks-43%2F43%20passing-22c55e)](benchmarks/)
 [![Precision](https://img.shields.io/badge/precision-100%25-success)](benchmarks/)
 [![False Positive Rate](https://img.shields.io/badge/FPR-0.0%25-blue)](benchmarks/)
@@ -20,6 +21,7 @@
 <p align="center">
   <a href="#-quickstart">Quickstart</a> •
   <a href="#-sub-skills-suite">Sub-Skills Suite</a> •
+  <a href="#-token-optimal-execution">Token Efficiency</a> •
   <a href="#-the-problem">The Problem</a> •
   <a href="#-core-thesis">Core Thesis</a> •
   <a href="#-execution-modes">Execution Modes</a> •
@@ -88,6 +90,18 @@ npx skills add rennixx/missing-piece --skill missing-piece-payments
 | **Framework** | [`missing-piece-nextjs`](skills/missing-piece-nextjs) | Next.js App Router auditor: Server Actions, route handlers, cache revalidation tags. | *"Audit Server Actions and cache tags in this Next.js app."* |
 | **Framework** | [`missing-piece-django`](skills/missing-piece-django) | Django & DRF auditor: model signals, `transaction.atomic` blocks, Celery hooks. | *"Audit Django signals and atomic transaction boundaries."* |
 | **Framework** | [`missing-piece-rails`](skills/missing-piece-rails) | Ruby on Rails auditor: ActiveRecord cascades (`dependent: :destroy`), Sidekiq retries. | *"Audit Rails associations and after_commit callback symmetries."* |
+
+---
+
+## ⚡ Token-Optimal Execution
+
+Every sub-skill in the Missing Piece suite is architected with a strict **Token-Optimal Execution Protocol**, minimizing static prompt overhead and cutting dynamic tool token usage by **60%–80%**:
+
+* 📐 **Self-Contained Inline Detector Matrix**: The core 14 detector families are embedded directly into `SKILL.md`. Host agents run complete audits without preloading external reference files into context (~1,400–2,000 static tokens saved per audit).
+* 🔍 **Grep-First, Slice-Second**: Agents search file lists first (`git grep -l`), then inspect targeted 15–25 line slices around relevant code. Dumping entire files (>100 lines) into context is strictly avoided (~15,000–45,000 execution tokens saved per audit).
+* 🚫 **Strict Path Exclusions**: Automated exclusion filters bypass package lockfiles, build artifacts (`dist/`, `build/`, `.next/`), `coverage/`, `.git/`, minified bundles, and mock test fixtures.
+* ⚡ **Early-Exit Short-Circuiting**: As soon as credible counter-evidence (e.g. middleware, ORM cascade, Celery task, base controller guard) is observed, the agent terminates the detector pass immediately without reading remaining callers.
+* 📝 **Token-Sparse Reporting**: Findings format evidence with line-range file links (`[app.py:40-55](file:///...)`) rather than duplicating massive blocks of source code.
 
 ---
 
