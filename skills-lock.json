@@ -4,7 +4,7 @@
     "missing-piece": {
       "source": "./skills/missing-piece",
       "sourceType": "local",
-      "computedHash": "1bda0009f10d73e5261025d3452ab76b8cfce0b288c81e49d1478982549ac40d"
+      "computedHash": "33a42d0da7b08f001b724e6cbdb91de37be02511798539f8d48919a4bbe9d866"
     },
     "missing-piece-async": {
       "source": "./skills/missing-piece-async",

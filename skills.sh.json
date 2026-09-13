@@ -1,0 +1,40 @@
+{
+  "$schema": "https://skills.sh/schemas/skills.sh.schema.json",
+  "notGrouped": "bottom",
+  "groupings": [
+    {
+      "title": "Core Auditor",
+      "description": "General audit engine discovering absent-but-implied software behavior across 14 detector families.",
+      "skills": [
+        "missing-piece"
+      ]
+    },
+    {
+      "title": "Workflow & Remediation",
+      "description": "Safe counterpart implementation, pre-merge PR diff checks, and contract reconciliation.",
+      "skills": [
+        "missing-piece-complete",
+        "missing-piece-pr",
+        "missing-piece-spec"
+      ]
+    },
+    {
+      "title": "Domain Rule Packs",
+      "description": "Deep specialized auditors for financial workflows, authentication/IAM, and distributed async tasks.",
+      "skills": [
+        "missing-piece-payments",
+        "missing-piece-auth",
+        "missing-piece-async"
+      ]
+    },
+    {
+      "title": "Framework Adapters",
+      "description": "Specialized counterpart detection for Next.js, Django, and Ruby on Rails.",
+      "skills": [
+        "missing-piece-nextjs",
+        "missing-piece-django",
+        "missing-piece-rails"
+      ]
+    }
+  ]
+}
