@@ -1,38 +1,46 @@
 ---
 name: missing-piece-django
-description: Django and Django REST Framework auditor. Use when auditing Django models, signals (post_save/post_delete), transaction.atomic blocks, DRF permission classes, and Celery tasks for missing counterparts.
+description: Django and DRF auditor for post_save/delete signal symmetry, transaction.atomic blocks, DRF permission classes, and on_commit Celery dispatch.
 ---
 
 # Missing Piece Django
 
-Framework discovery adapter for **Django & Django REST Framework (DRF)**.
+> [!TIP]
+> ### 📦 Full 10-Skill Missing Piece Suite
+> Install with the interactive selector: `npx skills add rennixx/missing-piece` (or `--all`).
+> 🔗 *Hub: [skills.sh/rennixx/missing-piece](https://skills.sh/rennixx/missing-piece)*
 
-Provides specialized counterpart discovery, signal tracing, and architectural patterns unique to the Django ecosystem.
+Specialized adapter for **Django & Django REST Framework (DRF)**.
+
+## ⚡ Token-Optimal Execution Protocol
+- **Signal & View Targeting**: Search `git grep -l "post_save"` or `git grep -l "APIView\|ViewSet"`. Inspect with 15–20 line slices.
+- **Strict Exclusions**: Ignore migrations (`migrations/`), virtualenvs, and static asset folders.
+- **Early Exit**: If `settings.py` defines global `DEFAULT_PERMISSION_CLASSES = [IsAuthenticated]`, dismiss generic view auth flags immediately.
+- **Token-Sparse Findings**: Format findings with direct file links and line numbers.
 
 ## Django Invariant Rules
 
 ### DJANGO-01 — Signal Creation/Deletion Symmetry
-- **Trigger**: A `post_save` signal receiver provisions a secondary resource (e.g. creating a `UserProfile` or Stripe customer on `User` creation).
-- **Expected Counterpart**: A matching `post_delete` signal receiver or model `delete()` override ensuring the secondary resource is cleaned up when the primary instance is deleted.
-- **Consequence of Absence**: Orphaned profile rows, billing records, or external entities left behind after user deletion.
+- **Trigger**: `post_save` receiver provisions secondary resource (profile, Stripe customer).
+- **Expected Counterpart**: Matching `post_delete` signal or model `delete()` cleanup.
+- **Consequence**: Orphaned child profiles or external accounts left on user deletion.
 
 ### DJANGO-02 — Multi-Model Write Atomic Boundaries
-- **Trigger**: A view or service function executes updates across multiple models or related tables (e.g. creating an Order and decrementing Stock).
-- **Expected Counterpart**: Encapsulation within `with transaction.atomic():` or `@transaction.atomic`.
-- **Consequence of Absence**: Partial failures leave the database in an inconsistent state (e.g. order created without stock reduction).
+- **Trigger**: View/service mutates multiple models (Order + Stock).
+- **Expected Counterpart**: `with transaction.atomic():` or `@transaction.atomic`.
+- **Consequence**: Partial failure leaves database in inconsistent state.
 
 ### DJANGO-03 — DRF ViewSet Permission Class Coverage
-- **Trigger**: A DRF ViewSet or APIView inherits from generic views (`ModelViewSet`).
-- **Expected Counterpart**: Explicit declaration of `permission_classes = [IsAuthenticated, ...]` or custom object permissions (`has_object_permission`).
-- **Counter-Evidence Check**: Verify whether `REST_FRAMEWORK['DEFAULT_PERMISSION_CLASSES']` enforces authentication globally in `settings.py`.
-- **Consequence of Absence**: Unprotected API views exposed to anonymous callers.
+- **Trigger**: DRF ViewSet/APIView inherits generic view without explicit permissions.
+- **Expected Counterpart**: `permission_classes = [IsAuthenticated, ...]` or global setting.
+- **Consequence**: Unprotected endpoints exposed to anonymous users.
 
 ### DJANGO-04 — ForeignKey Cascade Explicit Semantics
-- **Trigger**: A model defines a `ForeignKey` or `OneToOneField`.
-- **Expected Counterpart**: Explicit `on_delete=models.CASCADE`, `models.PROTECT`, or `models.SET_NULL` matching domain intent.
-- **Consequence of Absence**: Inadvertent cascade deletions destroying critical parent-child history or unhandled database integrity errors.
+- **Trigger**: Model defines `ForeignKey` or `OneToOneField`.
+- **Expected Counterpart**: Explicit `on_delete=models.CASCADE` / `PROTECT` / `SET_NULL`.
+- **Consequence**: Inadvertent cascade deletions destroying history.
 
 ### DJANGO-05 — Transaction Commit Celery Task Invocation
-- **Trigger**: Enqueueing a Celery task inside a view mutating database records.
-- **Expected Counterpart**: `transaction.on_commit(lambda: task.delay(...))` rather than immediate `task.delay(...)`.
-- **Consequence of Absence**: Race condition where Celery worker executes before database transaction commits, causing `DoesNotExist` exceptions in the worker.
+- **Trigger**: Enqueueing Celery task inside a DB mutation view.
+- **Expected Counterpart**: `transaction.on_commit(lambda: task.delay(...))` instead of immediate `task.delay(...)`.
+- **Consequence**: Worker race condition running before DB commit, causing `DoesNotExist`.

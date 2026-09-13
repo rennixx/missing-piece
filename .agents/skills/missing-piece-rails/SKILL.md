@@ -1,38 +1,46 @@
 ---
 name: missing-piece-rails
-description: "Ruby on Rails auditor. Use when auditing ActiveRecord associations (dependent: :destroy), callbacks (after_commit), Sidekiq job retries, Strong Parameters, and Pundit/CanCanCan policies for missing counterparts."
+description: "Ruby on Rails auditor for ActiveRecord associations (dependent: :destroy), after_commit callbacks, Sidekiq retry hooks, and Pundit/CanCanCan policies."
 ---
 
 # Missing Piece Rails
 
-Framework discovery adapter for **Ruby on Rails & ActiveRecord**.
+> [!TIP]
+> ### 📦 Full 10-Skill Missing Piece Suite
+> Install with the interactive selector: `npx skills add rennixx/missing-piece` (or `--all`).
+> 🔗 *Hub: [skills.sh/rennixx/missing-piece](https://skills.sh/rennixx/missing-piece)*
 
-Provides specialized counterpart discovery, callback tracing, and association patterns unique to Rails.
+Specialized adapter for **Ruby on Rails & ActiveRecord**.
+
+## ⚡ Token-Optimal Execution Protocol
+- **Targeted Macro Search**: Search `git grep -l "has_many\|has_one"` or `git grep -l "ApplicationController"`. Inspect with 15–20 line slices.
+- **Strict Exclusions**: Ignore asset pipelines, coverage, and log files.
+- **Early Exit**: If `ApplicationController` declares `after_action :verify_authorized`, dismiss general Pundit authorization omissions immediately.
+- **Token-Sparse Findings**: Format findings with direct file links and line numbers.
 
 ## Rails Invariant Rules
 
 ### RAILS-01 — Association Cascade & Cleanup Specification
-- **Trigger**: An ActiveRecord model declares `has_many` or `has_one` associations to dependent child models.
-- **Expected Counterpart**: Explicit `dependent: :destroy`, `dependent: :delete_all`, or `dependent: :nullify` option on the association macro.
-- **Consequence of Absence**: Parent record deletion leaves orphaned foreign-key records in the child table.
+- **Trigger**: ActiveRecord model declares `has_many` or `has_one`.
+- **Expected Counterpart**: Explicit `dependent: :destroy`, `:delete_all`, or `:nullify`.
+- **Consequence**: Parent deletion leaves orphaned foreign-key child records.
 
-### RAILS-02 — Transactional Callback Safety (`after_commit` vs `after_save`)
-- **Trigger**: A model callback triggers an external side-effect (enqueueing a Sidekiq background job, charging a credit card, sending an email).
-- **Expected Counterpart**: Use of `after_commit` (or `after_create_commit`) rather than `after_save` or `after_create`.
-- **Consequence of Absence**: If the database transaction rolls back, external side-effects (emails, job dispatches) have already been fired.
+### RAILS-02 — Transactional Callback Safety (`after_commit`)
+- **Trigger**: Model callback triggers external side-effects (Sidekiq, Stripe, email).
+- **Expected Counterpart**: Use of `after_commit` (not `after_save` / `after_create`).
+- **Consequence**: If DB transaction rolls back, side-effect has already dispatched.
 
 ### RAILS-03 — Sidekiq Retries Exhausted Recovery Hook
-- **Trigger**: A critical background job (e.g. syncing data with third-party service, processing payments) executes via Sidekiq.
-- **Expected Counterpart**: Declaration of `sidekiq_retries_exhausted do |msg, ex| ... end` block logging to an alert channel or updating job state.
-- **Consequence of Absence**: Failed jobs silently end up in the Sidekiq Dead Set without notification or state compensation.
+- **Trigger**: Critical worker job executes via Sidekiq.
+- **Expected Counterpart**: Declaration of `sidekiq_retries_exhausted` hook or dead-job alert.
+- **Consequence**: Dead jobs silently sit in Dead Set without alert or remediation.
 
-### RAILS-04 — Strong Parameters Completeness & Mass-Assignment
-- **Trigger**: A controller action updates an entity using `params.require(...).permit(...)`.
-- **Expected Counterpart**: Whitelist permits only expected user-editable fields; exclusion of sensitive administrative fields (e.g. `role`, `is_admin`, `verified`).
-- **Consequence of Absence**: Mass assignment privilege escalation vulnerability.
+### RAILS-04 — Strong Parameters Completeness
+- **Trigger**: Controller mutates record via `params.require(...).permit(...)`.
+- **Expected Counterpart**: Whitelist permits only user-editable fields; excludes `role`/`admin`.
+- **Consequence**: Mass assignment privilege escalation.
 
 ### RAILS-05 — Authorization Policy Enforcement
-- **Trigger**: A controller action mutates an ActiveRecord model.
-- **Expected Counterpart**: Invocation of `authorize @record` (Pundit) or `load_and_authorize_resource` (CanCanCan).
-- **Counter-Evidence Check**: Verify if `after_action :verify_authorized` is declared in `ApplicationController`.
-- **Consequence of Absence**: Unprotected actions bypassing application authorization boundaries.
+- **Trigger**: Controller action mutates model.
+- **Expected Counterpart**: `authorize @record` (Pundit) or `load_and_authorize_resource` (CanCanCan).
+- **Consequence**: Unprotected action bypassing authorization checks.
