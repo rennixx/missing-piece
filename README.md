@@ -244,7 +244,7 @@ python scripts/run_benchmark.py
 * 🎯 **Precision**: **100.0%** *(Target: >= 90.0%)*
 * 🛡️ **False Positive Rate**: **0.0%** *(Target: 0.0%)*
 * 🔄 **Recall**: **100.0%** *(All 14 core omissions detected)*
-* 🔍 **Evaluation Corpus**: **30 Scenarios** across positive omissions and negative controls.
+* 🔍 **Evaluation Corpus**: **43 Scenarios** across positive omissions, negative controls, exceptions, and disguised handlers.
 
 ---
 

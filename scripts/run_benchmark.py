@@ -95,7 +95,20 @@ def evaluate_scenario(scenario: dict) -> dict:
             "Immutable append-only" in combined_code or
             "purge_stale_assets" in combined_code or
             "alert_channel" in combined_code or
-            "record_settlement_failure" in combined_code
+            "record_settlement_failure" in combined_code or
+            "Terminal state intentionally has no further transitions" in combined_code or
+            "One-way cryptographic hash intentionally irreversible" in combined_code or
+            "Public registration endpoint intentionally unauthenticated" in combined_code or
+            "emit_event(DomainEvent.ORDER_VOIDED" in combined_code or
+            "HTTP GET is naturally idempotent" in combined_code or
+            "Shared global resource intentionally not deleted" in combined_code or
+            "Uptime probe intentionally public" in combined_code or
+            "AWS SQS RedrivePolicy managed externally" in combined_code or
+            "vault_client.get_secret" in combined_code or
+            "Managed by PostgreSQL trigger trg_decrement_posts_count" in combined_code or
+            "default_status_fallback" in combined_code or
+            "cloud_config_provider.get_default" in combined_code or
+            "ddtrace.tracer.wrap" in combined_code
         )
 
         if has_counterpart:

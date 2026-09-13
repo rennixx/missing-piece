@@ -240,6 +240,97 @@
       "type": "negative",
       "path": "benchmarks/fixtures/mp_ob/negative_settlement_with_alert",
       "expected_omission": null
+    },
+    {
+      "id": "st_terminal_cancelled_no_timeout",
+      "detector_family": "MP-ST",
+      "type": "exception",
+      "path": "benchmarks/fixtures/mp_st/exception_terminal_state",
+      "expected_omission": null
+    },
+    {
+      "id": "sy_one_way_hash_token",
+      "detector_family": "MP-SY",
+      "type": "exception",
+      "path": "benchmarks/fixtures/mp_sy/exception_one_way_hash",
+      "expected_omission": null
+    },
+    {
+      "id": "mg_public_registration",
+      "detector_family": "MP-MG",
+      "type": "exception",
+      "path": "benchmarks/fixtures/mp_mg/exception_public_registration",
+      "expected_omission": null
+    },
+    {
+      "id": "se_disguised_inventory_event",
+      "detector_family": "MP-SE",
+      "type": "disguised",
+      "path": "benchmarks/fixtures/mp_se/disguised_event_bus",
+      "expected_omission": null
+    },
+    {
+      "id": "fr_idempotent_get_endpoint",
+      "detector_family": "MP-FR",
+      "type": "exception",
+      "path": "benchmarks/fixtures/mp_fr/exception_idempotent_get",
+      "expected_omission": null
+    },
+    {
+      "id": "oc_shared_system_tag",
+      "detector_family": "MP-OC",
+      "type": "exception",
+      "path": "benchmarks/fixtures/mp_oc/exception_shared_resource",
+      "expected_omission": null
+    },
+    {
+      "id": "au_health_check_public",
+      "detector_family": "MP-AU",
+      "type": "exception",
+      "path": "benchmarks/fixtures/mp_au/exception_health_public",
+      "expected_omission": null
+    },
+    {
+      "id": "as_disguised_worker_retry",
+      "detector_family": "MP-AS",
+      "type": "disguised",
+      "path": "benchmarks/fixtures/mp_as/disguised_sqs_redrive",
+      "expected_omission": null
+    },
+    {
+      "id": "op_disguised_env_provider",
+      "detector_family": "MP-OP",
+      "type": "disguised",
+      "path": "benchmarks/fixtures/mp_op/disguised_vault_secrets",
+      "expected_omission": null
+    },
+    {
+      "id": "dc_disguised_db_trigger",
+      "detector_family": "MP-DC",
+      "type": "disguised",
+      "path": "benchmarks/fixtures/mp_dc/disguised_db_trigger",
+      "expected_omission": null
+    },
+    {
+      "id": "ct_disguised_wildcard_handler",
+      "detector_family": "MP-CT",
+      "type": "disguised",
+      "path": "benchmarks/fixtures/mp_ct/disguised_default_fallback",
+      "expected_omission": null
+    },
+    {
+      "id": "cf_disguised_cloud_config",
+      "detector_family": "MP-CF",
+      "type": "disguised",
+      "path": "benchmarks/fixtures/mp_cf/disguised_cloud_config",
+      "expected_omission": null
+    },
+    {
+      "id": "ob_disguised_apm_auto_instrumentation",
+      "detector_family": "MP-OB",
+      "type": "disguised",
+      "path": "benchmarks/fixtures/mp_ob/disguised_apm_tracer",
+      "expected_omission": null
     }
   ]
 }

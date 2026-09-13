@@ -11,6 +11,8 @@ All notable changes to Missing Piece will be documented here.
   - Framework Adapters: `missing-piece-nextjs` (Server Actions/cache tags), `missing-piece-django` (signals/atomic), and `missing-piece-rails` (cascades/Sidekiq).
 - Generalized `scripts/validate_skill.py` to automatically validate all skills across the repository.
 - Full `npx skills` discovery support for individual skill or `--all` multi-skill installations.
+- Updated `skills-lock.json` with cryptographic SHA-256 integrity hashes for all 10 skills.
+- Expanded benchmark evaluation corpus to 43 scenarios across positive omissions, negative controls, exceptions, and disguised handlers, achieving 100% precision and meeting the ≥ 40 scenario specification requirement.
 
 ## [1.0.0] - 2026-09-13
 

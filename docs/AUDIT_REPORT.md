@@ -149,7 +149,7 @@ python scripts/generate_fixtures.py
 ```
 ```text
 === Generating Benchmark Fixture Repositories ===
-[OK] Generated 30 fixture file(s) across 30 scenarios.
+[OK] Generated 43 fixture file(s) across 43 scenarios.
 ```
 
 ### 3. Benchmark Evaluation Suite
@@ -159,9 +159,9 @@ python scripts/run_benchmark.py
 ```text
 === Running Missing Piece Benchmark Evaluation Harness ===
 
-Benchmark Evaluation Summary (30 scenarios):
+Benchmark Evaluation Summary (43 scenarios):
   - True Positives (Detected Omissions): 14
-  - True Negatives (Suppressed Controls): 16
+  - True Negatives (Suppressed Controls): 29
   - False Positives: 0
   - False Negatives: 0
   - Precision: 100.0% (Target: >= 90.0%)

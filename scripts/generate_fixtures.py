@@ -100,6 +100,17 @@ class OrderService:
         print("Expired stale pending orders")
 '''
     },
+    "st_terminal_cancelled_no_timeout": {
+        "app.py": '''# MP-ST Exception Fixture: Terminal cancelled state with no timeout transition
+class OrderStatus:
+    CANCELLED = "cancelled"
+
+class OrderService:
+    def close_order(self, order_id: str):
+        # Terminal state intentionally has no further transitions
+        return OrderStatus.CANCELLED
+'''
+    },
 
     # MP-SY
     "sy_grant_no_revoke": {
@@ -119,6 +130,16 @@ class PermissionManager:
 
     def revoke_role(self, user_id: str, role_name: str):
         print(f"Revoked {role_name} from {user_id}")
+'''
+    },
+    "sy_one_way_hash_token": {
+        "app.py": '''# MP-SY Exception Fixture: One-way hash intentionally has no decrypt counterpart
+import hashlib
+
+class TokenService:
+    def hash_token(self, raw_token: str) -> str:
+        # One-way cryptographic hash intentionally irreversible
+        return hashlib.sha256(raw_token.encode()).hexdigest()
 '''
     },
 
@@ -154,6 +175,19 @@ def perform_user_purge(user_id):
     return f"Purged user {user_id}", 200
 '''
     },
+    "mg_public_registration": {
+        "app.py": '''# MP-MG Exception Fixture: Public signup endpoint without auth guard
+from flask import Flask, request
+
+app = Flask(__name__)
+
+@app.route("/api/register", methods=["POST"])
+def register_user():
+    # Public registration endpoint intentionally unauthenticated
+    data = request.get_json()
+    return {"status": "created", "user": data.get("username")}, 201
+'''
+    },
 
     # MP-SE
     "se_cancel_no_inventory": {
@@ -174,6 +208,14 @@ class OrderController:
         order.status = "CANCELLED"
         self.db.save(order)
         self.inventory_service.unreserve_items(order.items)
+'''
+    },
+    "se_disguised_inventory_event": {
+        "app.py": '''# MP-SE Disguised Fixture: Inventory release handled via domain event bus
+class OrderService:
+    def cancel_order(self, order_id: str):
+        # Disguised counterpart: triggers inventory replenishment via event bus
+        emit_event(DomainEvent.ORDER_VOIDED, {"order_id": order_id})
 '''
     },
 
@@ -201,6 +243,18 @@ def handle_stripe_webhook():
     return "OK", 200
 '''
     },
+    "fr_idempotent_get_endpoint": {
+        "app.py": '''# MP-FR Exception Fixture: Read endpoint naturally idempotent without tokens
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route("/api/reports/<report_id>", methods=["GET"])
+def get_report(report_id):
+    # HTTP GET is naturally idempotent without idempotency key checks
+    return {"report_id": report_id, "data": "ready"}, 200
+'''
+    },
 
     # MP-OC
     "oc_user_delete_orphans": {
@@ -217,6 +271,14 @@ class AccountManager:
     def delete_account(self, user_id: str):
         db.query("DELETE FROM user_uploads WHERE user_id = %s", user_id)
         db.query("DELETE FROM users WHERE id = %s", user_id)
+'''
+    },
+    "oc_shared_system_tag": {
+        "app.py": '''# MP-OC Exception Fixture: Shared reference tag retained on project delete
+class ProjectService:
+    def delete_project(self, project_id: str):
+        # Shared global resource intentionally not deleted during project removal
+        db.query("DELETE FROM projects WHERE id = %s", project_id)
 '''
     },
 
@@ -236,6 +298,14 @@ ROUTER = {
     "/api/dashboard": "read",
     "/api/settings": "write",
     "/api/export_data": "admin"
+}
+'''
+    },
+    "au_health_check_public": {
+        "app.py": '''# MP-AU Exception Fixture: Public health check route
+ROUTER = {
+    "/api/dashboard": "read",
+    "/healthz": None # Uptime probe intentionally public
 }
 '''
     },
@@ -262,6 +332,14 @@ class JobWorker:
                 self.retry_queue.push(job_data)
 '''
     },
+    "as_disguised_worker_retry": {
+        "app.py": '''# MP-AS Disguised Fixture: Queue retries handled by cloud infrastructure
+class WorkerService:
+    def consume_message(self, message):
+        # AWS SQS RedrivePolicy managed externally via Terraform infrastructure
+        process_payload(message.body)
+'''
+    },
 
     # MP-OP
     "op_env_missing_config": {
@@ -279,6 +357,14 @@ REQUIRED_CONFIG = ["ANALYTICS_DB_URL"]
 def validate_config():
     for key in REQUIRED_CONFIG:
         assert key in os.environ, f"Missing required env var: {key}"
+'''
+    },
+    "op_disguised_env_provider": {
+        "app.py": '''# MP-OP Disguised Fixture: Config fetched dynamically from secret manager
+class ConfigService:
+    def get_database_credentials(self):
+        # Disguised config provider: vault_client.get_secret retrieves dynamic creds
+        return vault_client.get_secret("db_credentials")
 '''
     },
 
@@ -305,6 +391,14 @@ class PostService:
     def delete_post(self, post_id, user_id):
         db.query("DELETE FROM posts WHERE id = %s", post_id)
         db.query("UPDATE users SET posts_count = posts_count - 1 WHERE id = %s", user_id)
+'''
+    },
+    "dc_disguised_db_trigger": {
+        "app.py": '''# MP-DC Disguised Fixture: Denormalized counter updated via database trigger
+class PostService:
+    def delete_post(self, post_id: str):
+        # Managed by PostgreSQL trigger trg_decrement_posts_count on posts table
+        db.query("DELETE FROM posts WHERE id = %s", post_id)
 '''
     },
 
@@ -344,6 +438,18 @@ def handle_payment_status(status: PaymentStatus):
         print("Refunded")
 '''
     },
+    "ct_disguised_wildcard_handler": {
+        "app.py": '''# MP-CT Disguised Fixture: Fallback wildcard handler catches unlisted variants
+class EventHandler:
+    def handle_status(self, status):
+        match status:
+            case "ACTIVE":
+                return "active"
+            case _:
+                # default_status_fallback safely handles all other enum cases
+                return default_status_fallback(status)
+'''
+    },
 
     # MP-CF
     "cf_optional_integration_crash": {
@@ -365,6 +471,14 @@ def notify_slack(msg):
         print("Slack notification skipped (SLACK_WEBHOOK_URL not configured)")
         return
     print(f"Sent to Slack: {msg}")
+'''
+    },
+    "cf_disguised_cloud_config": {
+        "app.py": '''# MP-CF Disguised Fixture: Integration config loaded via dynamic cloud provider
+class IntegrationConfig:
+    def get_slack_url(self):
+        # cloud_config_provider.get_default supplies fallback integration URL
+        return cloud_config_provider.get_default("SLACK_WEBHOOK_URL")
 '''
     },
 
@@ -397,6 +511,14 @@ class SettlementService:
                 self.metrics.record_settlement_failure(tx.id)
 
     def settle_transaction(self, tx):
+        pass
+'''
+    },
+    "ob_disguised_apm_auto_instrumentation": {
+        "app.py": '''# MP-OB Disguised Fixture: APM auto-instrumentation catches errors
+class SettlementProcessor:
+    # ddtrace.tracer.wrap automatically records traces and unhandled error metrics
+    def process_settlement(self, tx):
         pass
 '''
     }

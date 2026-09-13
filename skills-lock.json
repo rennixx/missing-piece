@@ -4,7 +4,52 @@
     "missing-piece": {
       "source": "./skills/missing-piece",
       "sourceType": "local",
-      "computedHash": "1d1c0cb2bd5c3ab8c1520b1868630277962113a57153c1a877162f9668da0b80"
+      "computedHash": "2e89d0159b8fb58298cabc865ab777dba8d2687e58be7e670ba82f66d6c71424"
+    },
+    "missing-piece-async": {
+      "source": "./skills/missing-piece-async",
+      "sourceType": "local",
+      "computedHash": "479ab81bf0d4ce1f471f63ca9fb73da41a56badacdd27f274fec7893180cc77c"
+    },
+    "missing-piece-auth": {
+      "source": "./skills/missing-piece-auth",
+      "sourceType": "local",
+      "computedHash": "77aeb3e7e8244c306bd5e3f5ae56661c689f7c56e6f7df76e4b46bce80b49c40"
+    },
+    "missing-piece-complete": {
+      "source": "./skills/missing-piece-complete",
+      "sourceType": "local",
+      "computedHash": "0ea0433d355f42f37bc80b79a6ee6cd45657fd19c9061a1a9e4da48815c12cca"
+    },
+    "missing-piece-django": {
+      "source": "./skills/missing-piece-django",
+      "sourceType": "local",
+      "computedHash": "a9c3fca63f76489b206b4ba00b288f85ea3e479d046f37e35a492fc76b5b9f71"
+    },
+    "missing-piece-nextjs": {
+      "source": "./skills/missing-piece-nextjs",
+      "sourceType": "local",
+      "computedHash": "5a8ffd069024f9a8678d17ba279aeca236ba90cd6bd27773671fd59bfbb0ad29"
+    },
+    "missing-piece-payments": {
+      "source": "./skills/missing-piece-payments",
+      "sourceType": "local",
+      "computedHash": "9427a32f4df9a5dfcf600939e12b410d05d441c96fb6bf2e98d664d4d1e1cb3c"
+    },
+    "missing-piece-pr": {
+      "source": "./skills/missing-piece-pr",
+      "sourceType": "local",
+      "computedHash": "f40bee86bef4f754754930fa7a2dcdd7946d38be72c4b439febb6458e10eeebe"
+    },
+    "missing-piece-rails": {
+      "source": "./skills/missing-piece-rails",
+      "sourceType": "local",
+      "computedHash": "958afe3054d71347939e2c91ea2bd6cf0548f7df45f1df725a20264b66abb7ae"
+    },
+    "missing-piece-spec": {
+      "source": "./skills/missing-piece-spec",
+      "sourceType": "local",
+      "computedHash": "214459b144227a59abbd1363b39a7e00ad3e18cbe03e5efc9dea64bdfda7fd3c"
     }
   }
 }
