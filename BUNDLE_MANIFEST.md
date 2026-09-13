@@ -2,12 +2,10 @@
 
 - `AGENTS.md`
 - `CHANGELOG.md`
-- `CODEX_BOOTSTRAP_PROMPT.md`
 - `CONTRIBUTING.md`
 - `LICENSE`
 - `README.md`
 - `SECURITY.md`
-- `docs/ACCEPTANCE_CRITERIA.md`
 - `docs/ARCHITECTURE.md`
 - `docs/AUDIT_REPORT.md`
 - `docs/CONFIDENCE_AND_SEVERITY.md`
@@ -18,14 +16,12 @@
 - `docs/EVALUATION_AND_BENCHMARKS.md`
 - `docs/FALSE_POSITIVE_POLICY.md`
 - `docs/GLOSSARY.md`
-- `docs/IMPLEMENTATION_PLAN.md`
 - `docs/POSITIONING_AND_GTM.md`
 - `docs/PRD.md`
 - `docs/PRODUCT_VISION.md`
 - `docs/REPORTING_SPEC.md`
 - `docs/RISKS_AND_MITIGATIONS.md`
 - `docs/ROADMAP.md`
-- `docs/SCOPE_AND_MVP.md`
 - `docs/SECURITY_PRIVACY.md`
 - `docs/TEST_STRATEGY.md`
 - `docs/USER_FLOWS_AND_COMMANDS.md`

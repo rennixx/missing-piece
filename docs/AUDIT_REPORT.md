@@ -70,13 +70,13 @@ Prior to remediation, `MP-OB` was omitted from `benchmarks/manifest.json`, `scri
 - **Status:** **Fixed**
 
 **Observed**  
-The core specification establishes 14 detector families, but [`docs/ACCEPTANCE_CRITERIA.md`](file:///c:/projects/missing-piece/docs/ACCEPTANCE_CRITERIA.md) and [`docs/IMPLEMENTATION_PLAN.md`](file:///c:/projects/missing-piece/docs/IMPLEMENTATION_PLAN.md) previously listed only 10 detector families under detector coverage.
+The core specification establishes 14 detector families, but initial internal acceptance criteria and milestone checklists previously listed only 10 detector families under detector coverage.
 
 **Gap**  
 `MP-OP` (Operational), `MP-CT` (Contract), `MP-CF` (Configuration), and `MP-OB` (Observability) were omitted from the formal acceptance criteria checklists.
 
 **Remediation Applied**  
-Updated [`docs/ACCEPTANCE_CRITERIA.md`](file:///c:/projects/missing-piece/docs/ACCEPTANCE_CRITERIA.md#L24-L38) and [`docs/IMPLEMENTATION_PLAN.md`](file:///c:/projects/missing-piece/docs/IMPLEMENTATION_PLAN.md#L34-L48) to explicitly enumerate all 14 detector families (`MP-LC` through `MP-OB`).
+Synchronized all internal checklists to explicitly enumerate all 14 detector families (`MP-LC` through `MP-OB`) prior to deprecating the builder scaffolding files.
 
 ---
 
@@ -119,7 +119,7 @@ Added `skills-lock.json` and `.gitignore` to [`BUNDLE_MANIFEST.md`](file:///c:/p
 - **Skill package**: [`skills/missing-piece/SKILL.md`](file:///c:/projects/missing-piece/skills/missing-piece/SKILL.md), all 9 references, 3 examples, and report template.
 - **Evaluation & benchmark suite**: [`benchmarks/manifest.json`](file:///c:/projects/missing-piece/benchmarks/manifest.json), [`scripts/generate_fixtures.py`](file:///c:/projects/missing-piece/scripts/generate_fixtures.py), [`scripts/run_benchmark.py`](file:///c:/projects/missing-piece/scripts/run_benchmark.py), and all 14 fixture folders in [`benchmarks/fixtures/`](file:///c:/projects/missing-piece/benchmarks/fixtures).
 - **Validation tooling**: [`scripts/validate_skill.py`](file:///c:/projects/missing-piece/scripts/validate_skill.py).
-- **Documentation bundle**: All 21 specification files in [`docs/`](file:///c:/projects/missing-piece/docs), [`README.md`](file:///c:/projects/missing-piece/README.md), [`CHANGELOG.md`](file:///c:/projects/missing-piece/CHANGELOG.md), [`BUNDLE_MANIFEST.md`](file:///c:/projects/missing-piece/BUNDLE_MANIFEST.md), [`skills-lock.json`](file:///c:/projects/missing-piece/skills-lock.json), [`.gitignore`](file:///c:/projects/missing-piece/.gitignore).
+- **Documentation bundle**: All core specification files in [`docs/`](file:///c:/projects/missing-piece/docs), [`README.md`](file:///c:/projects/missing-piece/README.md), [`CHANGELOG.md`](file:///c:/projects/missing-piece/CHANGELOG.md), [`BUNDLE_MANIFEST.md`](file:///c:/projects/missing-piece/BUNDLE_MANIFEST.md), [`skills-lock.json`](file:///c:/projects/missing-piece/skills-lock.json), [`.gitignore`](file:///c:/projects/missing-piece/.gitignore).
 - **Git status**: Clean working tree on branch `main` synchronized with remote `origin/main`.
 
 ### Not Verified / Excluded
