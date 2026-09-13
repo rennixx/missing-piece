@@ -9,6 +9,7 @@
 - `SECURITY.md`
 - `docs/ACCEPTANCE_CRITERIA.md`
 - `docs/ARCHITECTURE.md`
+- `docs/AUDIT_REPORT.md`
 - `docs/CONFIDENCE_AND_SEVERITY.md`
 - `docs/DETECTION_METHODOLOGY.md`
 - `docs/DETECTOR_CATALOG.md`
