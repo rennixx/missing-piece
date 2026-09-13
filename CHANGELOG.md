@@ -2,6 +2,16 @@
 
 All notable changes to Missing Piece will be documented here.
 
+## [1.1.0] - 2026-09-14
+
+### Added
+- Expanded **Missing Piece** into a 10-skill suite with 9 specialized companion sub-skills:
+  - Workflow: `missing-piece-complete` (remediation engine), `missing-piece-pr` (pre-merge diff gatekeeper), and `missing-piece-spec` (contract/schema gap reconciler).
+  - Domain Rule Packs: `missing-piece-payments` (financial/webhooks), `missing-piece-auth` (IAM/sessions), and `missing-piece-async` (queues/DLQs/locks).
+  - Framework Adapters: `missing-piece-nextjs` (Server Actions/cache tags), `missing-piece-django` (signals/atomic), and `missing-piece-rails` (cascades/Sidekiq).
+- Generalized `scripts/validate_skill.py` to automatically validate all skills across the repository.
+- Full `npx skills` discovery support for individual skill or `--all` multi-skill installations.
+
 ## [1.0.0] - 2026-09-13
 
 ### Added

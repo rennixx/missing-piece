@@ -29,15 +29,15 @@ REQUIRED_REPORT_FIELDS = [
     "Observed", "Expected", "Evidence searched", "Gap", "Why it matters", "Verification"
 ]
 
-def validate_frontmatter(content: str) -> list[str]:
+def validate_frontmatter(content: str, expected_name: str = "missing-piece") -> list[str]:
     errors = []
     if not content.startswith("---"):
-        errors.append("SKILL.md must start with YAML frontmatter ('---')")
+        errors.append(f"{expected_name}/SKILL.md must start with YAML frontmatter ('---')")
         return errors
     
     parts = content.split("---", 2)
     if len(parts) < 3:
-        errors.append("SKILL.md frontmatter missing closing '---'")
+        errors.append(f"{expected_name}/SKILL.md frontmatter missing closing '---'")
         return errors
     
     frontmatter = parts[1]
@@ -45,16 +45,33 @@ def validate_frontmatter(content: str) -> list[str]:
     desc_match = re.search(r"^description:\s*(.+)$", frontmatter, re.MULTILINE)
 
     if not name_match:
-        errors.append("Frontmatter missing 'name:' field")
-    elif name_match.group(1).strip() != "missing-piece":
-        errors.append(f"Frontmatter name is '{name_match.group(1).strip()}', expected 'missing-piece'")
+        errors.append(f"{expected_name}/SKILL.md missing 'name:' field")
+    elif name_match.group(1).strip() != expected_name:
+        errors.append(f"{expected_name}/SKILL.md name is '{name_match.group(1).strip()}', expected '{expected_name}'")
 
     if not desc_match:
-        errors.append("Frontmatter missing 'description:' field")
+        errors.append(f"{expected_name}/SKILL.md missing 'description:' field")
     elif len(desc_match.group(1).strip()) < 10:
-        errors.append("Frontmatter description is too short")
+        errors.append(f"{expected_name}/SKILL.md description is too short")
 
     return errors
+
+
+def validate_all_skills() -> tuple[list[str], int]:
+    errors = []
+    skills_root = SKILL_DIR.parent
+    skill_dirs = [d for d in skills_root.iterdir() if d.is_dir() and (d / "SKILL.md").exists()]
+    if not skill_dirs:
+        errors.append("No skills found in skills/ directory")
+        return errors, 0
+
+    for sdir in sorted(skill_dirs):
+        skill_md = sdir / "SKILL.md"
+        content = skill_md.read_text(encoding="utf-8")
+        errs = validate_frontmatter(content, expected_name=sdir.name)
+        errors.extend(errs)
+
+    return errors, len(skill_dirs)
 
 
 def validate_file_references(skill_content: str) -> list[str]:
@@ -121,7 +138,7 @@ def validate_manifest_coverage() -> list[str]:
 
 
 def main():
-    print("=== Validating Missing Piece Skill Package ===")
+    print("=== Validating Missing Piece Skill Suite ===")
     if not SKILL_MD.exists():
         print(f"ERROR: {SKILL_MD} does not exist")
         sys.exit(1)
@@ -131,7 +148,8 @@ def main():
     detector_rules_content = detector_rules_path.read_text(encoding="utf-8") if detector_rules_path.exists() else ""
 
     errors = []
-    errors.extend(validate_frontmatter(skill_content))
+    all_skill_errors, skill_count = validate_all_skills()
+    errors.extend(all_skill_errors)
     errors.extend(validate_file_references(skill_content))
     errors.extend(validate_detector_coverage(skill_content, detector_rules_content))
     errors.extend(validate_template())
@@ -144,7 +162,7 @@ def main():
         sys.exit(1)
 
     print("\n[OK] Skill package validation PASSED successfully!")
-    print("  - Verified SKILL.md frontmatter")
+    print(f"  - Verified all {skill_count} skills in skills/ with valid frontmatter and descriptions")
     print("  - Verified 14 detector family codes in SKILL.md and detector-rules.md")
     print("  - Verified 14 detector family coverage in benchmarks/manifest.json (positive & controls)")
     print("  - Verified file references and report templates")

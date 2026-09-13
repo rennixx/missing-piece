@@ -43,6 +43,15 @@
 - `skills/missing-piece/references/security-permissions.md`
 - `skills/missing-piece/references/symmetry.md`
 - `skills/missing-piece/templates/audit-report.md`
+- `skills/missing-piece-complete/SKILL.md`
+- `skills/missing-piece-pr/SKILL.md`
+- `skills/missing-piece-spec/SKILL.md`
+- `skills/missing-piece-payments/SKILL.md`
+- `skills/missing-piece-auth/SKILL.md`
+- `skills/missing-piece-async/SKILL.md`
+- `skills/missing-piece-nextjs/SKILL.md`
+- `skills/missing-piece-django/SKILL.md`
+- `skills/missing-piece-rails/SKILL.md`
 - `benchmarks/manifest.json`
 - `scripts/validate_skill.py`
 - `scripts/generate_fixtures.py`

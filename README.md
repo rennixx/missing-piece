@@ -57,6 +57,34 @@ Once installed, invoke Missing Piece with natural language inside your agent cha
 
 ---
 
+## 📦 Sub-Skills Suite
+
+Missing Piece is distributed as an extensible suite of **10 specialized skills**. Install individual skills with `--skill <name>` or install all of them at once with `--all`:
+
+```bash
+# Install specific sub-skills
+npx skills add rennixx/missing-piece --skill missing-piece-pr
+npx skills add rennixx/missing-piece --skill missing-piece-complete
+
+# Or install the entire 10-skill suite
+npx skills add rennixx/missing-piece --all
+```
+
+| Category | Skill Name | Focus & Purpose |
+|---|---|---|
+| **Core** | [`missing-piece`](skills/missing-piece) | Full repository general audit across all 14 detector families in read-only mode. |
+| **Workflow** | [`missing-piece-complete`](skills/missing-piece-complete) | Safe remediation engine: implements missing counterparts for accepted audit findings. |
+| **Workflow** | [`missing-piece-pr`](skills/missing-piece-pr) | Pre-merge delta auditor for Git diffs, pull requests, and staged commits. |
+| **Workflow** | [`missing-piece-spec`](skills/missing-piece-spec) | Reconciles OpenAPI, GraphQL, and database schemas against active implementation. |
+| **Domain Pack** | [`missing-piece-payments`](skills/missing-piece-payments) | Deep auditor for Stripe, webhooks, checkout flows, refunds, and dunning retries. |
+| **Domain Pack** | [`missing-piece-auth`](skills/missing-piece-auth) | Deep auditor for IAM, session invalidation on reset, multi-tenant scoping, and RBAC. |
+| **Domain Pack** | [`missing-piece-async`](skills/missing-piece-async) | Deep auditor for queue workers, DLQs, poison pills, distributed locks, and schedulers. |
+| **Framework** | [`missing-piece-nextjs`](skills/missing-piece-nextjs) | Next.js App Router, Server Actions, route handlers, cache revalidation, streaming. |
+| **Framework** | [`missing-piece-django`](skills/missing-piece-django) | Django models, signal symmetries, `transaction.atomic` blocks, Celery hooks. |
+| **Framework** | [`missing-piece-rails`](skills/missing-piece-rails) | Ruby on Rails ActiveRecord cascades, `after_commit` callbacks, Sidekiq retries. |
+
+---
+
 ## 🛑 The Problem
 
 Most developer tools reason exclusively over code that **already exists**:
