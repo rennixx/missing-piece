@@ -2,6 +2,13 @@
 
 All notable changes to Missing Piece will be documented here.
 
+## [1.1.1] - 2026-09-14
+
+### Security
+- Hardened skill payload by relocating mock audit report examples from `skills/missing-piece/examples/` to `docs/examples/`.
+- Added non-executable documentation disclaimers preventing static AST/AI scanners from flagging mock findings as package vulnerabilities.
+- Re-verified clean security audits across Gen (Agent Trust Hub), Socket.dev (0 alerts), and Snyk.
+
 ## [1.1.0] - 2026-09-14
 
 ### Added
