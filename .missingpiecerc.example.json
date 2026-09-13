@@ -1,0 +1,42 @@
+{
+  "$schema": "https://raw.githubusercontent.com/rennixx/missing-piece/main/docs/schemas/missingpiecerc.schema.json",
+  "version": "1.0",
+  "minConfidence": 0.85,
+  "minSeverity": "Medium",
+  "excludePaths": [
+    "tests/**",
+    "test/**",
+    "fixtures/**",
+    "benchmarks/fixtures/**",
+    "node_modules/**",
+    "vendor/**",
+    ".git/**",
+    "dist/**",
+    "build/**"
+  ],
+  "externalBoundaries": [
+    {
+      "trigger": "stripe.webhook.charge.succeeded",
+      "counterpartLocation": "External service: billing-worker-service",
+      "reason": "Webhook events are routed directly to AWS SQS and consumed by the standalone billing worker."
+    }
+  ],
+  "suppressions": [
+    {
+      "id": "SUPPRESS-001",
+      "detector_family": "MP-LC",
+      "file": "src/cache/ephemeral_pool.py",
+      "symbol": "EphemeralConnectionPool",
+      "reason": "Connections are OS-level managed and intentionally persist for the lifetime of the Lambda container."
+    }
+  ],
+  "customRules": [
+    {
+      "name": "AuditLogOnFinancialMutation",
+      "triggerPattern": "def update_balance|def transfer_funds",
+      "expectedCounterpart": "audit_logger.record_transaction",
+      "detector_family": "MP-SE",
+      "severity": "High"
+    }
+  ]
+}

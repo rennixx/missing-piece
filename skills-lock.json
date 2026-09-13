@@ -21,10 +21,20 @@
       "sourceType": "local",
       "computedHash": "bb0d0abfab5d6807c19d2ba69d45f9bd6901327ddb2ebcf1963220e51913e8d5"
     },
+    "missing-piece-database": {
+      "source": "./skills/missing-piece-database",
+      "sourceType": "local",
+      "computedHash": "7b7e67ef0f32d7a60cafd963d9e9981076a46efa843b61bc065e919761fac999"
+    },
     "missing-piece-django": {
       "source": "./skills/missing-piece-django",
       "sourceType": "local",
       "computedHash": "0f14fca69b657eb2e079a7784a005ac848cc0a68cd3f6ef53b8fe2f285798a85"
+    },
+    "missing-piece-fastapi": {
+      "source": "./skills/missing-piece-fastapi",
+      "sourceType": "local",
+      "computedHash": "8cb6a6d7cb75b9822a6f8045c976ce8c4cbae32622cb6c5d9fe5ca3aef422711"
     },
     "missing-piece-nextjs": {
       "source": "./skills/missing-piece-nextjs",

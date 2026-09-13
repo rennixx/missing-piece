@@ -2,6 +2,22 @@
 
 All notable changes to Missing Piece will be documented here.
 
+## [1.2.0] - 2026-09-14
+
+### Added
+- Expanded suite to **12 specialized skills** with 2 new domain & framework adapters:
+  - `missing-piece-database`: Database & migration auditor for schema drift, irreversible down migrations, cascade deletes, and unindexed foreign keys.
+  - `missing-piece-fastapi`: FastAPI auditor for lifespan teardowns, session yield cleanups, background task exceptions, and router security guards.
+- **GitHub Actions CI Pipeline** (`.github/workflows/ci.yml`): Automated multi-skill validation and 43 benchmark evaluations on all pushes and pull requests.
+- **Automated PR Diff Workflow Template** (`.github/workflows/missing-piece-pr.yml`): Reusable GitHub Actions workflow for auditing pull request diffs using `missing-piece-pr`.
+- **SARIF 2.1.0 Exporter** (`scripts/export_sarif.py`): Standalone converter exporting audit findings to SARIF for native display under GitHub's **Security > Code Scanning Alerts** tab.
+- **Project-Level Configuration System** (`.missingpiecerc.json`): Support for project-defined exclusion paths, external service counterpart boundaries, and custom suppression rules (`references/configuration.md`).
+- **End-to-End Walkthrough Guide** (`docs/WALKTHROUGH.md`): Step-by-step case study demonstrating omission detection on Stripe webhooks and safe automated remediation with `missing-piece-complete`.
+- **Visual Mermaid Architecture Flowchart**: High-resolution interactive reasoning loop embedded into `README.md`.
+
+### Removed
+- Removed internal coding-agent bootstrap prompts and initial scaffolding checklists (`CODEX_BOOTSTRAP_PROMPT.md`, `docs/IMPLEMENTATION_PLAN.md`, `docs/ACCEPTANCE_CRITERIA.md`, `docs/SCOPE_AND_MVP.md`).
+
 ## [1.1.1] - 2026-09-14
 
 ### Security

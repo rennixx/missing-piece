@@ -29,6 +29,7 @@ To minimize token usage and host agent context consumption, enforce these operat
 3. **Early-Exit Short-Circuit**: The moment credible counter-evidence is spotted (e.g. middleware registered in router, ORM cascade, Celery task, base controller guard), immediately terminate that detector pass. Do not inspect remaining files.
 4. **Self-Contained Execution**: Use the inline detector matrix below. Do NOT load files in `references/` unless an ambiguous multi-entity conflict requires extended policy lookup.
 5. **Token-Sparse Reporting**: Format findings with direct file links and line ranges (`[app.py:40-55](file:///...)`) rather than duplicating large code blocks. Omit conversational filler.
+6. **Project Configuration**: Check for `.missingpiecerc.json` at repo root for exclusions, external boundaries, and custom suppressions (`references/configuration.md`).
 
 ## Non-negotiable Invariant
 
@@ -83,3 +84,4 @@ Lazy-loaded references for complex edge cases only (do not preload):
 - `references/failure-side-effects.md`
 - `references/security-permissions.md`
 - `references/data-operations.md`
+- `references/configuration.md`

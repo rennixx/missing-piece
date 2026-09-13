@@ -20,18 +20,20 @@
     },
     {
       "title": "Domain Rule Packs",
-      "description": "Deep specialized auditors for financial workflows, authentication/IAM, and distributed async tasks.",
+      "description": "Deep specialized auditors for financial workflows, authentication/IAM, distributed async tasks, and database migrations.",
       "skills": [
         "missing-piece-payments",
         "missing-piece-auth",
-        "missing-piece-async"
+        "missing-piece-async",
+        "missing-piece-database"
       ]
     },
     {
       "title": "Framework Adapters",
-      "description": "Specialized counterpart detection for Next.js, Django, and Ruby on Rails.",
+      "description": "Specialized counterpart detection for Next.js, FastAPI, Django, and Ruby on Rails.",
       "skills": [
         "missing-piece-nextjs",
+        "missing-piece-fastapi",
         "missing-piece-django",
         "missing-piece-rails"
       ]
