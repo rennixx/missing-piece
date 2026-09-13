@@ -10,6 +10,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-emerald.svg)](LICENSE)
 [![Skills Suite](https://img.shields.io/badge/suite-10%20skills-8b5cf6)](skills/)
 [![Detector Families](https://img.shields.io/badge/detectors-14%20families-3b82f6)](docs/DETECTOR_CATALOG.md)
+[![Security: Audited](https://img.shields.io/badge/security-audited-success)](https://skills.sh/rennixx/missing-piece)
 [![Benchmark Suite](https://img.shields.io/badge/benchmarks-43%2F43%20passing-22c55e)](benchmarks/)
 [![Precision](https://img.shields.io/badge/precision-100%25-success)](benchmarks/)
 [![False Positive Rate](https://img.shields.io/badge/FPR-0.0%25-blue)](benchmarks/)
@@ -25,6 +26,7 @@
   <a href="#-14-detector-families">14 Detector Families</a> •
   <a href="#-example-finding">Example Finding</a> •
   <a href="#-benchmarks--testing">Benchmarks</a> •
+  <a href="#-security--privacy">Security</a> •
   <a href="#-documentation-sitemap">Documentation</a>
 </p>
 
@@ -284,6 +286,18 @@ The benchmark corpus contains **43 ground-truth scenarios** designed to verify t
 | [`docs/EVALUATION_AND_BENCHMARKS.md`](docs/EVALUATION_AND_BENCHMARKS.md) | Ground-truth benchmark methodology, fixture taxonomy, and scoring. |
 | [`docs/AUDIT_REPORT.md`](docs/AUDIT_REPORT.md) | Living verification and audit tracking report. |
 | [`AGENTS.md`](AGENTS.md) | Working rules, documentation precedence, and definition of done. |
+
+---
+
+## 🛡️ Security & Privacy
+
+Missing Piece is designed from first principles to be safe to run on production codebases:
+
+* 🔒 **Triple-Audited via `skills.sh`**: Independently assessed across **Gen (Agent Trust Hub)**, **Socket.dev**, and **Snyk** with zero malicious findings or critical supply chain vulnerabilities.
+* 👁️ **Read-Only by Default**: Audit operations (`missing-piece`, `missing-piece-pr`, domain packs) inspect the codebase passively and never modify source files, database records, or environment configurations.
+* 🛡️ **Untrusted Code Isolation**: Audited source code is treated strictly as untrusted evidence. Prompt injection attempts embedded within comments, docstrings, or schemas are discarded by design.
+* 🚫 **Zero Silent Telemetry / Egress**: Missing Piece contains zero external network calls, does not phone home, and never exports proprietary code or customer tokens.
+* ✍️ **User-Gated Remediation**: Automated fixes are isolated to the [`missing-piece-complete`](skills/missing-piece-complete) sub-skill and execute strictly upon explicit developer confirmation.
 
 ---
 
