@@ -2,64 +2,76 @@
   "version": 1,
   "skills": {
     "missing-piece": {
-      "source": "./skills/missing-piece",
-      "sourceType": "local",
-      "computedHash": "16967bcb67b442b5b2e570da2a003842cb244e81a18118bd7ff8d9d0af53f04f"
+      "source": "rennixx/missing-piece",
+      "sourceType": "github",
+      "skillPath": "skills/missing-piece/SKILL.md",
+      "computedHash": "db98f92235b8d88dfd50d0bc33ad34dd98f38240c28516a8ce5ca4e44b1ae257"
     },
     "missing-piece-async": {
-      "source": "./skills/missing-piece-async",
-      "sourceType": "local",
-      "computedHash": "22bea8e489a57690b9abb51c751a829f5b554c385c0d197a6b734b84072f9367"
+      "source": "rennixx/missing-piece",
+      "sourceType": "github",
+      "skillPath": "skills/missing-piece-async/SKILL.md",
+      "computedHash": "2280fac578137058d3f498fe60fb943270f8477da699a30682bd9ab14d8a85c5"
     },
     "missing-piece-auth": {
-      "source": "./skills/missing-piece-auth",
-      "sourceType": "local",
-      "computedHash": "55650137264ab68e5bcb3c6a6348e45f734b0fad633756e87af93fd1eda81faa"
+      "source": "rennixx/missing-piece",
+      "sourceType": "github",
+      "skillPath": "skills/missing-piece-auth/SKILL.md",
+      "computedHash": "5dcd112f73471daa37f0e9f961e3dc752f3ad512445b751f5e51caad39b8dcbf"
     },
     "missing-piece-complete": {
-      "source": "./skills/missing-piece-complete",
-      "sourceType": "local",
-      "computedHash": "2dfd6f5f98bff64f6a319e3856576b45cec571e719b0b4b18f1102c6e6f657f7"
+      "source": "rennixx/missing-piece",
+      "sourceType": "github",
+      "skillPath": "skills/missing-piece-complete/SKILL.md",
+      "computedHash": "34902d5b1f5ae9866d11ee078f17a477289577b29a998202a391c7c08e6b508f"
     },
     "missing-piece-database": {
-      "source": "./skills/missing-piece-database",
-      "sourceType": "local",
-      "computedHash": "026ac40831042f9ce283b5a36a11b29fbb3a5c4a7856afd9fd120bc1de403e82"
+      "source": "rennixx/missing-piece",
+      "sourceType": "github",
+      "skillPath": "skills/missing-piece-database/SKILL.md",
+      "computedHash": "e8decf1b5a3084be88b7cc53a3122339266080743eeb447187470eb41530cf44"
     },
     "missing-piece-django": {
-      "source": "./skills/missing-piece-django",
-      "sourceType": "local",
-      "computedHash": "c7c4b32700555f6a8c460400685c1eb8aeab38b644735370e982e6cc47ebb178"
+      "source": "rennixx/missing-piece",
+      "sourceType": "github",
+      "skillPath": "skills/missing-piece-django/SKILL.md",
+      "computedHash": "1b4a7f27742f22d38b41553efa843cb19710036985ccebc21590704c12a6ca9c"
     },
     "missing-piece-fastapi": {
-      "source": "./skills/missing-piece-fastapi",
-      "sourceType": "local",
-      "computedHash": "a2bb7e44633f9f28784fef64e2c3e308aa6ed5cc870a2468129409a122a78b38"
+      "source": "rennixx/missing-piece",
+      "sourceType": "github",
+      "skillPath": "skills/missing-piece-fastapi/SKILL.md",
+      "computedHash": "3d336702b635171d3cfe226d07d216ab799cf86d756a5d3907d5be2982075ded"
     },
     "missing-piece-nextjs": {
-      "source": "./skills/missing-piece-nextjs",
-      "sourceType": "local",
-      "computedHash": "3bf65cd27c6dbf524806726e952e7978bf4dfe2d2b99c359998bcb5b6435a9de"
+      "source": "rennixx/missing-piece",
+      "sourceType": "github",
+      "skillPath": "skills/missing-piece-nextjs/SKILL.md",
+      "computedHash": "250a2fd9c61ed9e41073f44b374a1300585faac0411a06740f27b05a78bc99fd"
     },
     "missing-piece-payments": {
-      "source": "./skills/missing-piece-payments",
-      "sourceType": "local",
-      "computedHash": "78f0defef3f89f10fd8e20d1b088d0ef5357f138bbdad811b4fa0b9b6bbae65d"
+      "source": "rennixx/missing-piece",
+      "sourceType": "github",
+      "skillPath": "skills/missing-piece-payments/SKILL.md",
+      "computedHash": "b342177a45f7518029e936aec40e9fa1889777f1c7c4ffd99e615e3acf134eba"
     },
     "missing-piece-pr": {
-      "source": "./skills/missing-piece-pr",
-      "sourceType": "local",
-      "computedHash": "3f4768f5240e775e8874e09097a848afaca3730f263cf9918953ff7ab724dc8c"
+      "source": "rennixx/missing-piece",
+      "sourceType": "github",
+      "skillPath": "skills/missing-piece-pr/SKILL.md",
+      "computedHash": "de964d70df8018c01498aa378b14b212a538eea8d936cbc778875d9e88734772"
     },
     "missing-piece-rails": {
-      "source": "./skills/missing-piece-rails",
-      "sourceType": "local",
-      "computedHash": "22daa5be68f07f4c4334917b67b347494779bf4e218a027f76e7b70152c5f6bf"
+      "source": "rennixx/missing-piece",
+      "sourceType": "github",
+      "skillPath": "skills/missing-piece-rails/SKILL.md",
+      "computedHash": "5af09a9d0dcfa5ced401bf714106674a80a4db21c0b0c82f69ab225fa9aa31d8"
     },
     "missing-piece-spec": {
-      "source": "./skills/missing-piece-spec",
-      "sourceType": "local",
-      "computedHash": "cd42302087828995561891748f1346263223f95c0386830649fdabaa4b79b5ec"
+      "source": "rennixx/missing-piece",
+      "sourceType": "github",
+      "skillPath": "skills/missing-piece-spec/SKILL.md",
+      "computedHash": "cbe472b6c8d4bf59cc2e17039b36d39a8b064935ea789daff5cefc9dc8fe830d"
     }
   }
 }

@@ -22,3 +22,8 @@ Thumbs.db
 .vscode/
 *.swp
 *.swo
+
+# Local agent installation symlinks
+.claude/
+agent/
+
