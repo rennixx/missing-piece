@@ -6,7 +6,7 @@ description: Django and DRF auditor for post_save/delete signal symmetry, transa
 # Missing Piece Django
 
 > [!TIP]
-> ### 📦 Full 10-Skill Missing Piece Suite
+> ### 📦 Full 12-Skill Missing Piece Suite
 > Install with the interactive selector: `npx skills add rennixx/missing-piece` (or `--all`).
 > 🔗 *Hub: [skills.sh/rennixx/missing-piece](https://skills.sh/rennixx/missing-piece)*
 

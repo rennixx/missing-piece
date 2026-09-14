@@ -5,6 +5,12 @@ description: Database, SQL migration, and ORM auditor for schema drift, irrevers
 
 # Missing Piece: Database & Migration Auditor
 
+> [!TIP]
+> ### 📦 Full 12-Skill Missing Piece Suite
+> Install with the interactive selector: px skills add rennixx/missing-piece\ (or \--all\).
+> 🔗 *Hub: [skills.sh/rennixx/missing-piece](https://skills.sh/rennixx/missing-piece)*
+
+
 Audits database migrations, schemas, and ORM models (Prisma, Drizzle, SQLAlchemy, Django ORM, ActiveRecord, TypeORM, raw SQL) for schema drift, orphan record vulnerabilities, and rollback omissions.
 
 ## Core Invariant

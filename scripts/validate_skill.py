@@ -137,6 +137,56 @@ def validate_manifest_coverage() -> list[str]:
     return errors
 
 
+def validate_registry_synchronization() -> list[str]:
+    errors = []
+    repo_root = SKILL_DIR.parent.parent
+    skills_root = SKILL_DIR.parent
+    local_skills = sorted([d.name for d in skills_root.iterdir() if d.is_dir() and (d / "SKILL.md").exists()])
+
+    # Check skills.sh.json
+    ssh_path = repo_root / "skills.sh.json"
+    if ssh_path.exists():
+        try:
+            ssh_data = json.loads(ssh_path.read_text(encoding="utf-8"))
+            registered = set()
+            for grp in ssh_data.get("groupings", []):
+                registered.update(grp.get("skills", []))
+            for s in local_skills:
+                if s not in registered:
+                    errors.append(f"Skill '{s}' missing from groupings in skills.sh.json")
+        except Exception as e:
+            errors.append(f"Failed to parse skills.sh.json: {e}")
+
+    # Check skills-lock.json
+    slock_path = repo_root / "skills-lock.json"
+    if slock_path.exists():
+        try:
+            slock_data = json.loads(slock_path.read_text(encoding="utf-8"))
+            locked_skills = set(slock_data.get("skills", {}).keys())
+            for s in local_skills:
+                if s not in locked_skills:
+                    errors.append(f"Skill '{s}' missing from skills-lock.json")
+        except Exception as e:
+            errors.append(f"Failed to parse skills-lock.json: {e}")
+
+    # Check BUNDLE_MANIFEST.md
+    bm_path = repo_root / "BUNDLE_MANIFEST.md"
+    if bm_path.exists():
+        bm_text = bm_path.read_text(encoding="utf-8")
+        for s in local_skills:
+            if f"skills/{s}/SKILL.md" not in bm_text:
+                errors.append(f"Skill file 'skills/{s}/SKILL.md' missing from BUNDLE_MANIFEST.md")
+
+    # Check .agents mirror
+    agents_root = repo_root / ".agents" / "skills"
+    for s in local_skills:
+        agent_skill = agents_root / s / "SKILL.md"
+        if not agent_skill.exists():
+            errors.append(f"Skill mirror missing in .agents/skills/{s}/SKILL.md")
+
+    return errors
+
+
 def main():
     print("=== Validating Missing Piece Skill Suite ===")
     if not SKILL_MD.exists():
@@ -154,6 +204,7 @@ def main():
     errors.extend(validate_detector_coverage(skill_content, detector_rules_content))
     errors.extend(validate_template())
     errors.extend(validate_manifest_coverage())
+    errors.extend(validate_registry_synchronization())
 
     if errors:
         print(f"\nValidation FAILED with {len(errors)} error(s):")
@@ -166,6 +217,7 @@ def main():
     print("  - Verified 14 detector family codes in SKILL.md and detector-rules.md")
     print("  - Verified 14 detector family coverage in benchmarks/manifest.json (positive & controls)")
     print("  - Verified file references and report templates")
+    print("  - Verified cross-registry synchronization across skills.sh.json, skills-lock.json, and BUNDLE_MANIFEST.md")
     sys.exit(0)
 
 

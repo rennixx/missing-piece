@@ -5,6 +5,12 @@ description: FastAPI and Starlette auditor for lifespan teardowns, session yield
 
 # Missing Piece: FastAPI Framework Auditor
 
+> [!TIP]
+> ### 📦 Full 12-Skill Missing Piece Suite
+> Install with the interactive selector: px skills add rennixx/missing-piece\ (or \--all\).
+> 🔗 *Hub: [skills.sh/rennixx/missing-piece](https://skills.sh/rennixx/missing-piece)*
+
+
 Audits FastAPI, Starlette, and Pydantic applications for missing lifespan teardowns, leaked database sessions in `Depends()`, unhandled background exceptions, and router security asymmetry.
 
 ## Core Invariant

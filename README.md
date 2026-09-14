@@ -44,7 +44,7 @@ Install directly into any project or workspace using the standard Agent Skills C
 # Install core Missing Piece auditor into your current project
 npx skills add rennixx/missing-piece
 
-# Or install the entire 10-skill suite at once
+# Or install the entire 12-skill suite at once
 npx skills add rennixx/missing-piece --all
 
 # Or install globally for all your AI coding agents

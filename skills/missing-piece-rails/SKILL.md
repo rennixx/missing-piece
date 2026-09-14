@@ -6,7 +6,7 @@ description: "Ruby on Rails auditor for ActiveRecord associations (dependent: :d
 # Missing Piece Rails
 
 > [!TIP]
-> ### 📦 Full 10-Skill Missing Piece Suite
+> ### 📦 Full 12-Skill Missing Piece Suite
 > Install with the interactive selector: `npx skills add rennixx/missing-piece` (or `--all`).
 > 🔗 *Hub: [skills.sh/rennixx/missing-piece](https://skills.sh/rennixx/missing-piece)*
 

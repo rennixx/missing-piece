@@ -11,15 +11,15 @@
 
 ## System Model
 
-Missing Piece is an open-source Agent Skill for discovering software behavior that is absent but logically implied by what a system already implements. Reconstructed system components:
+Missing Piece is an open-source Agent Skill suite for discovering software behavior that is absent but logically implied by what a system already implements. Reconstructed system components:
 
-1. **Skill Router & Reasoning Engine:** [`skills/missing-piece/SKILL.md`](file:///c:/projects/missing-piece/skills/missing-piece/SKILL.md) routing 14 detector families (`MP-LC` through `MP-OB`), backed by 9 reference guides in [`skills/missing-piece/references/`](file:///c:/projects/missing-piece/skills/missing-piece/references), 3 canonical examples in [`docs/examples/`](file:///c:/projects/missing-piece/docs/examples), and [`skills/missing-piece/templates/audit-report.md`](file:///c:/projects/missing-piece/skills/missing-piece/templates/audit-report.md).
+1. **Skill Router & Reasoning Suite:** Core router [`skills/missing-piece/SKILL.md`](file:///c:/projects/missing-piece/skills/missing-piece/SKILL.md) covering 14 detector families (`MP-LC` through `MP-OB`), accompanied by 11 specialized companion skills, 10 reference guides in [`skills/missing-piece/references/`](file:///c:/projects/missing-piece/skills/missing-piece/references) (including project configuration and suppression), 3 canonical examples in [`docs/examples/`](file:///c:/projects/missing-piece/docs/examples), and [`skills/missing-piece/templates/audit-report.md`](file:///c:/projects/missing-piece/skills/missing-piece/templates/audit-report.md).
 2. **Benchmark Corpus & Evaluation Suite:**
-   - [`benchmarks/manifest.json`](file:///c:/projects/missing-piece/benchmarks/manifest.json): 30 benchmark scenarios across positive, negative, exception, and disguised fixture repositories covering all 14 detector families.
-   - [`scripts/generate_fixtures.py`](file:///c:/projects/missing-piece/scripts/generate_fixtures.py) & [`benchmarks/fixtures/`](file:///c:/projects/missing-piece/benchmarks/fixtures): 30 fixture codebases across 14 family directories.
-   - [`scripts/run_benchmark.py`](file:///c:/projects/missing-piece/scripts/run_benchmark.py): Evaluation harness checking precision, recall, and counter-evidence suppression.
-   - [`scripts/validate_skill.py`](file:///c:/projects/missing-piece/scripts/validate_skill.py): Quality gate verifying frontmatter, references, report template fields, and 14-detector manifest coverage.
-3. **Packaging & Governance:** [`BUNDLE_MANIFEST.md`](file:///c:/projects/missing-piece/BUNDLE_MANIFEST.md), [`skills-lock.json`](file:///c:/projects/missing-piece/skills-lock.json), [`.gitignore`](file:///c:/projects/missing-piece/.gitignore), [`AGENTS.md`](file:///c:/projects/missing-piece/AGENTS.md), and documentation bundle in [`docs/`](file:///c:/projects/missing-piece/docs).
+   - [`benchmarks/manifest.json`](file:///c:/projects/missing-piece/benchmarks/manifest.json): 43 benchmark scenarios across positive, negative, exception, and disguised fixture repositories covering all 14 detector families.
+   - [`scripts/generate_fixtures.py`](file:///c:/projects/missing-piece/scripts/generate_fixtures.py) & [`benchmarks/fixtures/`](file:///c:/projects/missing-piece/benchmarks/fixtures): 43 fixture codebases.
+   - [`scripts/run_benchmark.py`](file:///c:/projects/missing-piece/scripts/run_benchmark.py): Evaluation harness checking precision, recall, and counter-evidence suppression (100% precision, 100% recall, 0% FPR).
+   - [`scripts/validate_skill.py`](file:///c:/projects/missing-piece/scripts/validate_skill.py): Quality gate verifying frontmatter, references, report template fields, manifest coverage, and cross-registry synchronization across `skills.sh.json`, `skills-lock.json`, and `BUNDLE_MANIFEST.md`.
+3. **Packaging & Governance:** [`BUNDLE_MANIFEST.md`](file:///c:/projects/missing-piece/BUNDLE_MANIFEST.md), [`skills.sh.json`](file:///c:/projects/missing-piece/skills.sh.json), [`skills-lock.json`](file:///c:/projects/missing-piece/skills-lock.json), [`.gitignore`](file:///c:/projects/missing-piece/.gitignore), [`AGENTS.md`](file:///c:/projects/missing-piece/AGENTS.md), and documentation bundle in [`docs/`](file:///c:/projects/missing-piece/docs).
 
 ---
 
@@ -31,6 +31,9 @@ Missing Piece is an open-source Agent Skill for discovering software behavior th
 | **MP-CT-002** | Acceptance criteria and milestone checklist omit 4 declared detector families | `MP-CT` | Medium | High (0.95) | **Fixed** |
 | **MP-CT-003** | Package validator does not verify benchmark manifest detector family coverage | `MP-CT` | Medium | High (0.90) | **Fixed** |
 | **Needs Confirmation** | `skills-lock.json` omitted from `BUNDLE_MANIFEST.md` | `MP-DC` | Low | Medium (0.75) | **Fixed** |
+| **MP-CT-004** | Outdated "10-Skill" banner in skills and missing discovery banners in new skills | `MP-CT` | Medium | High (1.0) | **Fixed** |
+| **MP-DC-002** | Package validator does not verify registry synchronization with `skills.sh.json` and `skills-lock.json` | `MP-DC` | Medium | High (0.95) | **Fixed** |
+| **MP-OB-002** | Documentation metric drift in living audit report System Model | `MP-OB` | Low | High (0.90) | **Fixed** |
 
 ---
 
@@ -113,17 +116,63 @@ Added `skills-lock.json` and `.gitignore` to [`BUNDLE_MANIFEST.md`](file:///c:/p
 
 ---
 
+### MP-CT-004 — Outdated "10-Skill" banner in skills and missing discovery banners in new skills
+
+- **Detector Family:** `MP-CT` (Contract Completeness) / `MP-SY` (Symmetry Analysis)
+- **Severity:** Medium
+- **Confidence:** High (1.0)
+- **Status:** **Fixed**
+
+**Observed**  
+Following the expansion to 12 skills, existing `SKILL.md` files still advertised a 10-skill suite, while newly added skills (`missing-piece-database` and `missing-piece-fastapi`) omitted the discovery banner.
+
+**Remediation Applied**  
+Symmetrically updated discovery banners across all 12 skills in `skills/` and mirrored them to `.agents/skills/`. Updated the `README.md` quickstart comment to reference the 12-skill suite.
+
+---
+
+### MP-DC-002 — Package validator does not verify registry synchronization with `skills.sh.json` and `skills-lock.json`
+
+- **Detector Family:** `MP-DC` (Data Consistency)
+- **Severity:** Medium
+- **Confidence:** High (0.95)
+- **Status:** **Fixed**
+
+**Observed**  
+[`scripts/validate_skill.py`](file:///c:/projects/missing-piece/scripts/validate_skill.py) verified frontmatter for folders in `skills/`, but did not check whether all skills were registered in `skills.sh.json`, locked in `skills-lock.json`, and listed in `BUNDLE_MANIFEST.md`.
+
+**Remediation Applied**  
+Implemented `validate_registry_synchronization()` in [`scripts/validate_skill.py`](file:///c:/projects/missing-piece/scripts/validate_skill.py). The validator now programmatically enforces cross-registry parity across `skills.sh.json`, `skills-lock.json`, `BUNDLE_MANIFEST.md`, and `.agents/skills/`.
+
+---
+
+### MP-OB-002 — Documentation metric drift in living audit report System Model
+
+- **Detector Family:** `MP-OB` (Observability Implied) / `MP-CT` (Contract Completeness)
+- **Severity:** Low
+- **Confidence:** High (0.90)
+- **Status:** **Fixed**
+
+**Observed**  
+The System Model in `docs/AUDIT_REPORT.md` cited outdated historical metrics (30 benchmark scenarios, 9 references).
+
+**Remediation Applied**  
+Updated the System Model and Inspected coverage sections to reflect active v1.2.0 suite metrics (12 skills, 10 reference guides, 43 benchmark scenarios across 43 fixtures).
+
+---
+
 ## Coverage Summary
 
 ### Inspected
-- **Skill package**: [`skills/missing-piece/SKILL.md`](file:///c:/projects/missing-piece/skills/missing-piece/SKILL.md), all 9 references, 3 examples, and report template.
-- **Evaluation & benchmark suite**: [`benchmarks/manifest.json`](file:///c:/projects/missing-piece/benchmarks/manifest.json), [`scripts/generate_fixtures.py`](file:///c:/projects/missing-piece/scripts/generate_fixtures.py), [`scripts/run_benchmark.py`](file:///c:/projects/missing-piece/scripts/run_benchmark.py), and all 14 fixture folders in [`benchmarks/fixtures/`](file:///c:/projects/missing-piece/benchmarks/fixtures).
-- **Validation tooling**: [`scripts/validate_skill.py`](file:///c:/projects/missing-piece/scripts/validate_skill.py).
-- **Documentation bundle**: All core specification files in [`docs/`](file:///c:/projects/missing-piece/docs), [`README.md`](file:///c:/projects/missing-piece/README.md), [`CHANGELOG.md`](file:///c:/projects/missing-piece/CHANGELOG.md), [`BUNDLE_MANIFEST.md`](file:///c:/projects/missing-piece/BUNDLE_MANIFEST.md), [`skills-lock.json`](file:///c:/projects/missing-piece/skills-lock.json), [`.gitignore`](file:///c:/projects/missing-piece/.gitignore).
+- **Skill suite**: [`skills/`](file:///c:/projects/missing-piece/skills) (all 12 skills: `missing-piece`, 3 workflow skills, 4 domain packs, 4 framework adapters).
+- **Reference & guidance library**: All 10 reference guides in [`skills/missing-piece/references/`](file:///c:/projects/missing-piece/skills/missing-piece/references) (including project configuration), 3 canonical examples in [`docs/examples/`](file:///c:/projects/missing-piece/docs/examples), and report template.
+- **Evaluation & benchmark suite**: [`benchmarks/manifest.json`](file:///c:/projects/missing-piece/benchmarks/manifest.json), [`scripts/generate_fixtures.py`](file:///c:/projects/missing-piece/scripts/generate_fixtures.py), [`scripts/run_benchmark.py`](file:///c:/projects/missing-piece/scripts/run_benchmark.py), and all 43 fixture files in [`benchmarks/fixtures/`](file:///c:/projects/missing-piece/benchmarks/fixtures).
+- **Validation & tooling**: [`scripts/validate_skill.py`](file:///c:/projects/missing-piece/scripts/validate_skill.py), [`scripts/export_sarif.py`](file:///c:/projects/missing-piece/scripts/export_sarif.py).
+- **Documentation bundle**: All core specification files in [`docs/`](file:///c:/projects/missing-piece/docs), [`README.md`](file:///c:/projects/missing-piece/README.md), [`CHANGELOG.md`](file:///c:/projects/missing-piece/CHANGELOG.md), [`BUNDLE_MANIFEST.md`](file:///c:/projects/missing-piece/BUNDLE_MANIFEST.md), [`skills-lock.json`](file:///c:/projects/missing-piece/skills-lock.json), [`skills.sh.json`](file:///c:/projects/missing-piece/skills.sh.json), [`.gitignore`](file:///c:/projects/missing-piece/.gitignore).
 - **Git status**: Clean working tree on branch `main` synchronized with remote `origin/main`.
 
 ### Not Verified / Excluded
-- Installed runtime mirror [`.agents/skills/missing-piece`](file:///c:/projects/missing-piece/.agents/skills/missing-piece) verified as identical (0 diffs) to `skills/missing-piece`.
+- Installed runtime mirror [`.agents/skills/`](file:///c:/projects/missing-piece/.agents/skills) verified as identical (0 diffs) across all 12 skills to `skills/`.
 
 ---
 
@@ -134,13 +183,14 @@ Added `skills-lock.json` and `.gitignore` to [`BUNDLE_MANIFEST.md`](file:///c:/p
 python scripts/validate_skill.py
 ```
 ```text
-=== Validating Missing Piece Skill Package ===
+=== Validating Missing Piece Skill Suite ===
 
 [OK] Skill package validation PASSED successfully!
-  - Verified SKILL.md frontmatter
+  - Verified all 12 skills in skills/ with valid frontmatter and descriptions
   - Verified 14 detector family codes in SKILL.md and detector-rules.md
   - Verified 14 detector family coverage in benchmarks/manifest.json (positive & controls)
   - Verified file references and report templates
+  - Verified cross-registry synchronization across skills.sh.json, skills-lock.json, and BUNDLE_MANIFEST.md
 ```
 
 ### 2. Fixture Generation

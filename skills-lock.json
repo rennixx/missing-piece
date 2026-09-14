@@ -4,62 +4,62 @@
     "missing-piece": {
       "source": "./skills/missing-piece",
       "sourceType": "local",
-      "computedHash": "2eef55dba5e7e2e1f2fcd942d3dbf0634b71bf73fa193b6d6932bd07ea3c0bdf"
+      "computedHash": "aa4a0bb63db8b37afc0ce6be5252a9b5187f54f0d44840022d52ba1b662f452b"
     },
     "missing-piece-async": {
       "source": "./skills/missing-piece-async",
       "sourceType": "local",
-      "computedHash": "22ef979753f26c618c2811c9e85c1f3ada4e56740093cf7ec8390ceed08d4741"
+      "computedHash": "22bea8e489a57690b9abb51c751a829f5b554c385c0d197a6b734b84072f9367"
     },
     "missing-piece-auth": {
       "source": "./skills/missing-piece-auth",
       "sourceType": "local",
-      "computedHash": "66f94c5457a85dafc64d609f3aa6f5180c36bf1ca36f863b7d18182242e2e625"
+      "computedHash": "55650137264ab68e5bcb3c6a6348e45f734b0fad633756e87af93fd1eda81faa"
     },
     "missing-piece-complete": {
       "source": "./skills/missing-piece-complete",
       "sourceType": "local",
-      "computedHash": "bb0d0abfab5d6807c19d2ba69d45f9bd6901327ddb2ebcf1963220e51913e8d5"
+      "computedHash": "2dfd6f5f98bff64f6a319e3856576b45cec571e719b0b4b18f1102c6e6f657f7"
     },
     "missing-piece-database": {
       "source": "./skills/missing-piece-database",
       "sourceType": "local",
-      "computedHash": "7b7e67ef0f32d7a60cafd963d9e9981076a46efa843b61bc065e919761fac999"
+      "computedHash": "026ac40831042f9ce283b5a36a11b29fbb3a5c4a7856afd9fd120bc1de403e82"
     },
     "missing-piece-django": {
       "source": "./skills/missing-piece-django",
       "sourceType": "local",
-      "computedHash": "0f14fca69b657eb2e079a7784a005ac848cc0a68cd3f6ef53b8fe2f285798a85"
+      "computedHash": "c7c4b32700555f6a8c460400685c1eb8aeab38b644735370e982e6cc47ebb178"
     },
     "missing-piece-fastapi": {
       "source": "./skills/missing-piece-fastapi",
       "sourceType": "local",
-      "computedHash": "8cb6a6d7cb75b9822a6f8045c976ce8c4cbae32622cb6c5d9fe5ca3aef422711"
+      "computedHash": "a2bb7e44633f9f28784fef64e2c3e308aa6ed5cc870a2468129409a122a78b38"
     },
     "missing-piece-nextjs": {
       "source": "./skills/missing-piece-nextjs",
       "sourceType": "local",
-      "computedHash": "07a66659623acb8e4eca3177368d0b7c75c502d01c92e30b72d9fb4fd6f931cf"
+      "computedHash": "3bf65cd27c6dbf524806726e952e7978bf4dfe2d2b99c359998bcb5b6435a9de"
     },
     "missing-piece-payments": {
       "source": "./skills/missing-piece-payments",
       "sourceType": "local",
-      "computedHash": "dad9c4af6808abaf40918554d60b73363f850abfba16287392ada49da02a06e4"
+      "computedHash": "78f0defef3f89f10fd8e20d1b088d0ef5357f138bbdad811b4fa0b9b6bbae65d"
     },
     "missing-piece-pr": {
       "source": "./skills/missing-piece-pr",
       "sourceType": "local",
-      "computedHash": "fa51ef6e8c56e854f79d993261fc95bba4a747310bb5ddeec1462660d6d66594"
+      "computedHash": "3f4768f5240e775e8874e09097a848afaca3730f263cf9918953ff7ab724dc8c"
     },
     "missing-piece-rails": {
       "source": "./skills/missing-piece-rails",
       "sourceType": "local",
-      "computedHash": "b3b1a831a6ba55fa630cd17a52e417b9e3e00a1cba8d86436a2cfc1814d8081b"
+      "computedHash": "22daa5be68f07f4c4334917b67b347494779bf4e218a027f76e7b70152c5f6bf"
     },
     "missing-piece-spec": {
       "source": "./skills/missing-piece-spec",
       "sourceType": "local",
-      "computedHash": "9118cd10bfd7c916436b24b4f4b470c348cd1ab27fd9d6d4ff55778c3d6bf691"
+      "computedHash": "cd42302087828995561891748f1346263223f95c0386830649fdabaa4b79b5ec"
     }
   }
 }

@@ -39,12 +39,15 @@ Recommended:
 ```text
 missing-piece/
 ├── skills/
-│   └── missing-piece/
-│       ├── SKILL.md
-│       ├── references/
-│       ├── templates/
-│       └── examples/
+│   ├── missing-piece/
+│   │   ├── SKILL.md
+│   │   ├── references/
+│   │   └── templates/
+│   ├── missing-piece-complete/
+│   └── ... (12 specialized skills)
 ├── docs/
+│   ├── examples/
+│   └── ...
 ├── README.md
 ├── AGENTS.md
 ├── LICENSE

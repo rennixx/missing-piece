@@ -6,16 +6,16 @@ description: Audit software repositories for absent-but-implied behavior, forgot
 # Missing Piece
 
 > [!TIP]
-> ### 📦 Full 10-Skill Missing Piece Suite
+> ### 📦 Full 12-Skill Missing Piece Suite
 > To install with the **interactive multi-skill selector** (allowing you to choose between the core auditor, PR checker, contract reconciliation, remediation, or framework adapters):
 > ```bash
 > npx skills add rennixx/missing-piece
 > ```
-> Or install all 10 specialized skills automatically:
+> Or install all 12 specialized skills automatically:
 > ```bash
 > npx skills add rennixx/missing-piece --all
 > ```
-> 🔗 *Explore all 10 specialized rule packs on the [Missing Piece Hub](https://skills.sh/rennixx/missing-piece).*
+> 🔗 *Explore all 12 specialized rule packs on the [Missing Piece Hub](https://skills.sh/rennixx/missing-piece).*
 
 Find **what should exist but appears not to**.
 
