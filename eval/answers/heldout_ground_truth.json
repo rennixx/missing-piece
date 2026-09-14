@@ -1,0 +1,66 @@
+{
+  "dataset": "heldout",
+  "version": "1.0",
+  "fixtures": {
+    "heldout_asymmetric_error_recovery": {
+      "target_file": "order_service.py",
+      "target_symbol": "execute_refund",
+      "known_defect": true,
+      "expected_family": "MP-FR",
+      "expected_disposition": "Confirmed defect",
+      "expected_source": "Repository-supported expectation",
+      "intent_type": "defect",
+      "route_guard_asymmetry": true,
+      "description": "execute_refund catches network exception without ledger rollback or retry; sibling execute_checkout has complete compensation"
+    },
+    "heldout_mock_db_cascade": {
+      "target_file": "schema.sql",
+      "target_symbol": "delete_user",
+      "known_defect": true,
+      "expected_family": "MP-OC",
+      "expected_disposition": "Likely gap",
+      "expected_source": "Repository-supported expectation",
+      "intent_type": "defect",
+      "mock_masked": true,
+      "description": "Parent deletion leaves orphaned profiles because schema lacks ON DELETE CASCADE; mock unit test masked the omission"
+    },
+    "heldout_lww_explicit_tradeoff": {
+      "target_file": "telemetry.py",
+      "target_symbol": "record_device_ping",
+      "known_defect": false,
+      "expected_family": "MP-MG",
+      "expected_disposition": "Accepted behavior",
+      "intent_type": "intentional_tradeoff",
+      "tradeoff_type": "documented-tradeoff",
+      "description": "High-throughput ping update with documented Last-Write-Wins tradeoff comment (RFC-204)"
+    },
+    "heldout_orphan_media_cleanup": {
+      "target_file": "media_service.py",
+      "target_symbol": "replace_avatar",
+      "known_defect": false,
+      "expected_family": "MP-OC",
+      "expected_disposition": "Accepted behavior",
+      "intent_type": "intentional_tradeoff",
+      "tradeoff_type": "best-effort",
+      "description": "Avatar update leaves old file with documented best-effort S3 lifecycle rule"
+    },
+    "heldout_ambiguous_status_transition": {
+      "target_file": "subscription.py",
+      "target_symbol": "Subscription",
+      "known_defect": false,
+      "expected_family": "MP-ST",
+      "expected_disposition": "Intent-dependent behavior",
+      "intent_type": "unknown_intent",
+      "description": "PENDING state never expires; no timeout transition or worker; intent undocumented"
+    },
+    "heldout_complete_symmetry": {
+      "target_file": "crypto_session.py",
+      "target_symbol": "CryptoSessionManager",
+      "known_defect": false,
+      "expected_family": null,
+      "expected_disposition": null,
+      "intent_type": "complete",
+      "description": "Symmetrical cryptographic session management with balanced open/close, key wipe, and revocation"
+    }
+  }
+}

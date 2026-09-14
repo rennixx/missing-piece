@@ -25,8 +25,8 @@ Do not behave like a generic code reviewer. Do not report style, architecture ta
 
 To minimize token usage and maintain uninterrupted execution, enforce these operational constraints:
 1. **Grep-first, Slice-second**: Search using file lists first (`git grep -l` or ripgrep without line dumps). Inspect matches using narrow line slices (15–25 lines around the symbol). Never load or dump full files (>100 lines) into context.
-2. **Strict Path Exclusions**: Never search or inspect lockfiles (`package-lock.json`, `yarn.lock`, `pnpm-lock.yaml`), build output (`dist/`, `build/`, `.next/`), `coverage/`, `.git/`, minified bundles, or test mocks.
-3. **Early-Exit Short-Circuit**: The moment credible counter-evidence or authorized intent is spotted, immediately terminate that detector pass. Do not inspect remaining files.
+2. **Path Exclusions & Critical Mock Inspection**: Exclude lockfiles (`package-lock.json`, `yarn.lock`, `pnpm-lock.yaml`), build output (`dist/`, `build/`, `.next/`), `coverage/`, and minified bundles. Inspect test mocks and test doubles specifically to understand verification limitations. Mock behavior is NOT evidence of production wiring. Distinguish real database/framework behavior from behavior supplied by a test double.
+3. **Candidate-Specific Clearance**: A guard, policy check, or intentional exception clears ONLY the specific trigger, path, actor, and failure mode it actually covers. Never terminate an entire detector family because one operation is guarded. Continue inspecting sibling routes, callers, and mutation endpoints within the family.
 4. **Self-Contained Execution**: Use the inline detector matrix below. Do NOT load files in `references/` unless an ambiguous multi-entity conflict requires extended policy lookup.
 5. **Token-Sparse Reporting**: Format findings with direct file links and line ranges (`[app.py:40-55](file:///...)`) rather than duplicating large code blocks. Omit conversational filler.
 6. **Project Configuration**: Check for `.missingpiecerc.json` at repo root for exclusions, external boundaries, and custom suppressions (`references/configuration.md`).
@@ -43,21 +43,27 @@ Every reported candidate must adhere to these 10 principles:
    - `Repository-supported expectation`: Consistent peer callers, tests, database schemas, or established domain invariants.
    - `Auditor assumption`: Conventional industry practice without clear repository support.
    *Strict Rule:* **Never present auditor assumptions as confirmed defects.**
-3. **Actively Check for Intentional Exceptions**: Investigate administrative overrides, last-write-wins semantics, best-effort cleanup, external ownership, and accepted operational tradeoffs. Require supporting evidence; do not invent intent merely to dismiss a finding; mark intent as unresolved if evidence is absent.
-4. **Separate Behavioral Confidence from Defect Confidence**:
+3. **Make Counter-Evidence Candidate-Specific**: A guard or intentional exception clears only the trigger, path, actor, and failure mode it covers. Never terminate an entire detector family because one operation is guarded.
+4. **Actively Check for Intentional Exceptions**: Investigate administrative overrides, last-write-wins semantics, best-effort cleanup, external ownership, and accepted operational tradeoffs. Require supporting evidence; do not invent intent merely to dismiss a finding; mark intent as unresolved (`Intent-dependent behavior`) if evidence is absent.
+5. **Require Claim-Level Evidence**: For each finding, establish:
+   - Applicable requirement or clearly labeled inferred expectation source.
+   - Reachable trigger and actor permissions.
+   - Observed behavior and specific missing counterpart.
+   - Searches and attempts to disprove the finding.
+   - Concrete consequence, separated from hypothetical downstream harm.
+   - Verification performed and remaining uncertainty.
+6. **Inspect Tests Critically**: Passing tests using test doubles prove only that mocks were satisfied, not that production components are correctly wired. Distinguish actual database/framework behavior from behavior supplied by a mock double. High-impact findings should receive a reproduction and normal-path control where practical. If verification is unavailable, report that limitation honestly without inventing certainty.
+7. **Record Meaningful Coverage**: Track inspected flows, transitions, callers, guards, and failure paths in a structured coverage ledger. Mark areas as inspected, partial, or unexamined. Record failed/truncated searches and resolve them before relying on absence claims. Do not imply exhaustive coverage from a bounded pass.
+8. **Keep Recommendations Proportional**: Recommend narrow changes against established requirements. Preserve intentional overrides, accepted tradeoffs, and external ownership when supported. Unknown intent must neither become assumed approval nor an automatic defect.
+9. **Separate Behavioral Confidence from Defect Confidence**:
    - `Behavioral Confidence` (High / Medium / Low): Certainty that the code executes as observed.
    - `Defect Confidence / Disposition`: Certainty that this behavior constitutes an undesirable defect. Avoid uncalibrated numerical confidence decimals.
-5. **Classify under Four Standard Dispositions**:
+10. **Classify under Four Standard Dispositions**:
    - `Confirmed defect`: Demonstrated violation of an established, explicit requirement.
    - `Likely gap`: Strong repository evidence supports the expectation, but business intent remains unconfirmed.
    - `Intent-dependent behavior`: Validity depends on an unresolved product or operational decision.
    - `Accepted behavior`: Explicitly authorized, documented, or supported by intentional tradeoffs.
-6. **Report Consequences Precisely**: Ground all consequence claims in reality without inflation:
-   - Duplicate activation ledger entries do not necessarily mean doubled lesson balances.
-   - An administrator-only override is not an authentication bypass.
-   - Failed cleanup leaving an orphaned file does not establish permanent retention or actual financial loss.
-7. **Treat Tests as Evidence, Not Policy**: Tests prove how code executes under test conditions, not what business policy demands. Reproductions must include normal-path controls and state: (1) what is proven, (2) what is mocked, and (3) what remains unverified.
-8. **Make Recommendations Conditional**: Explain which requirement or operational priority justifies a change. Do not automatically prescribe fixes because a conventional guard is missing. Prefer narrow remedies over prescribing new architecture.
+
 
 ## Inline Detector Matrix (14 Families)
 
@@ -80,15 +86,15 @@ Every reported candidate must adhere to these 10 principles:
 
 ## Audit Procedure
 
-1. **Establish Scope**: Identify target directory, framework conventions, and build boundaries. Explicitly record scope as a bounded pass.
+1. **Establish Scope & Ledger**: Identify target directory, framework conventions, and build boundaries. Initialize the structured Coverage Ledger to track flows, transitions, guards, and failure paths.
 2. **Reconstruct Model**: Locate entry points (routes/resolvers), stateful entities, background tasks, and role boundaries.
-3. **Run Candidate Passes**: Match observed triggers against the 14 families above. Generate candidates ONLY from concrete repository facts.
-4. **Targeted Counterpart Search**: Use bounded search (`git grep -l`) across handlers, middleware, triggers, events, and configs.
-5. **Attempt Counter-Evidence & Intent Disproof**: Actively search for intentional exceptions (admin overrides, last-write-wins, best-effort cleanup, external ownership, ADRs, comments).
-6. **Classify Expectation Source & Disposition**: Categorize expectation as `Explicit requirement`, `Repository-supported expectation`, or `Auditor assumption`. Assign disposition (`Confirmed defect`, `Likely gap`, `Intent-dependent behavior`, `Accepted behavior`).
-7. **Score Confidence & Severity**: Distinguish behavioral confidence from defect confidence. Score severity based on grounded, non-inflated operational consequence.
-8. **Collect Unresolved Intent Questions**: Log ambiguities where intent cannot be confirmed without stopping routine discovery.
-9. **Generate Report**: Render findings using `templates/audit-report.md`. Do not modify audited code in audit mode.
+3. **Run Candidate-Specific Passes**: Match observed triggers against the 14 families above. Evaluate each route, caller, or mutation independently. Never drop a family because one route is guarded.
+4. **Targeted Counterpart Search**: Use bounded search across handlers, middleware, triggers, events, and configs. Record and resolve any truncated searches before relying on absence claims.
+5. **Attempt Candidate-Specific Disproof & Mock Inspection**: Actively search for intentional exceptions (admin overrides, LWW, best-effort cleanup, external ownership). Inspect test mocks to identify verification limits; do not mistake test doubles for production wiring.
+6. **Assemble Claim-Level Evidence**: For every finding, establish: (1) expectation source, (2) reachable trigger & actor permissions, (3) observed vs missing counterpart, (4) disproof searches, (5) concrete consequence, and (6) verification performed + remaining uncertainty.
+7. **Classify Disposition & Log Unresolved Questions**: Assign disposition (`Confirmed defect`, `Likely gap`, `Intent-dependent behavior`, `Accepted behavior`). Log unknown intent in `Unresolved Intent Questions`—never assume approval or automatic defect.
+8. **Calibrate Confidence & Proportional Remedies**: Recommend narrow, proportional changes against established requirements. Avoid prescribing large-scale architecture.
+9. **Generate Report**: Render findings and the structured Coverage Ledger using `templates/audit-report.md`. Do not modify audited code in audit mode.
 
 ## References
 

@@ -1,0 +1,66 @@
+{
+  "dataset": "dev",
+  "version": "1.0",
+  "fixtures": {
+    "dev_route_guard_asymmetry": {
+      "target_file": "app.py",
+      "target_symbol": "purge_audit_logs",
+      "known_defect": true,
+      "expected_family": "MP-AU",
+      "expected_disposition": "Confirmed defect",
+      "expected_source": "Explicit requirement",
+      "intent_type": "defect",
+      "route_guard_asymmetry": true,
+      "description": "Sensitive admin route purge_audit_logs lacks @require_role guard present on sibling delete_user"
+    },
+    "dev_misleading_mock": {
+      "target_file": "service.py",
+      "target_symbol": "process_payment",
+      "known_defect": true,
+      "expected_family": "MP-SE",
+      "expected_disposition": "Likely gap",
+      "expected_source": "Repository-supported expectation",
+      "intent_type": "defect",
+      "mock_masked": true,
+      "description": "Production process_payment omits audit_ledger.record; test mock masked the missing production wiring"
+    },
+    "dev_intentional_admin_override": {
+      "target_file": "app.py",
+      "target_symbol": "emergency_admin_unlock",
+      "known_defect": false,
+      "expected_family": "MP-ST",
+      "expected_disposition": "Accepted behavior",
+      "intent_type": "intentional_override",
+      "tradeoff_type": "admin-override",
+      "description": "Administrative break-glass bypass documented in ADR-042 with role check"
+    },
+    "dev_unknown_intent_concurrency": {
+      "target_file": "inventory.py",
+      "target_symbol": "deduct_stock",
+      "known_defect": false,
+      "expected_family": "MP-MG",
+      "expected_disposition": "Intent-dependent behavior",
+      "intent_type": "unknown_intent",
+      "description": "In-place stock decrement without locking; intent is undocumented"
+    },
+    "dev_external_webhook_delegation": {
+      "target_file": "webhook.py",
+      "target_symbol": "handle_payment_webhook",
+      "known_defect": false,
+      "expected_family": "MP-AS",
+      "expected_disposition": "Accepted behavior",
+      "intent_type": "external_delegation",
+      "tradeoff_type": "external-owner",
+      "description": "Webhook forwards to external SQS topic; configured in .missingpiecerc.json"
+    },
+    "dev_complete_lifecycle": {
+      "target_file": "session_mgr.py",
+      "target_symbol": "WorkspaceSession",
+      "known_defect": false,
+      "expected_family": null,
+      "expected_disposition": null,
+      "intent_type": "complete",
+      "description": "Symmetrical workspace session lifecycle with __exit__, deterministic cleanup, and TTL purge"
+    }
+  }
+}

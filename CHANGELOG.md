@@ -2,6 +2,27 @@
 
 All notable changes to Missing Piece will be documented here.
 
+## [1.3.0] - 2026-09-14
+
+### Added
+- **Candidate-Specific Counter-Evidence Clearance**:
+  - Replaced family-wide early exit short-circuiting with candidate-specific clearance.
+  - A guard, policy check, or intentional exception clears ONLY the specific trigger, path, actor, and failure mode it covers. Sibling routes in the same module/router remain active for independent inspection.
+- **Critical Test & Mock Inspection**:
+  - Removed blanket exclusions of test mocks and test doubles.
+  - Auditors now inspect test mocks specifically to understand verification limitations, distinguishing actual production wiring from behavior supplied only by a test double.
+- **Claim-Level Evidence Contract**:
+  - Enforced across all findings: (1) expectation source, (2) reachable trigger & actor permissions, (3) observed vs. expected behavior, (4) disproof searches, (5) concrete consequences, and (6) verification performed with remaining uncertainty.
+- **Structured Coverage Ledger**:
+  - Replaced freeform coverage notes in `audit-report.md` with a structured ledger tracking inspected, partial, and unexamined flows, transitions, guards, failure paths, and search truncations.
+- **Proportional Recommendations & Intent Handling**:
+  - Favors narrow changes against established requirements while preserving intentional overrides, accepted tradeoffs, and external ownership.
+  - Classifies unknown intent as `Intent-dependent behavior` with an unresolved intent question.
+- **Reusable Evaluation Harness & Fixture Corpus** (`eval/`):
+  - 12 varied test fixtures across Development (`eval/fixtures/dev/`) and Held-out (`eval/fixtures/heldout/`) suites covering route-guard asymmetries, misleading test mocks, intentional overrides, concurrency tradeoffs, and external queue delegations.
+  - Isolated answer keys in `eval/answers/` ensuring independent evaluation.
+  - Automated evaluation harness (`eval/eval_harness.py`) computing Precision, Recall, Intent Errors, Evidence Errors, Coverage Honesty, and Verification Cost.
+
 ## [1.2.0] - 2026-09-14
 
 ### Added

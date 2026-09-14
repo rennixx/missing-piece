@@ -1,0 +1,8 @@
+{
+  "externalBoundaries": [
+    "aws-sqs-payment-events"
+  ],
+  "allowedUnpaired": [
+    "handle_payment_webhook"
+  ]
+}

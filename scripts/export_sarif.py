@@ -13,7 +13,7 @@ from pathlib import Path
 from typing import Any, Dict, List
 
 TOOL_NAME = "Missing Piece"
-TOOL_VERSION = "1.2.0"
+TOOL_VERSION = "1.3.0"
 TOOL_URI = "https://github.com/rennixx/missing-piece"
 
 SEVERITY_MAP = {

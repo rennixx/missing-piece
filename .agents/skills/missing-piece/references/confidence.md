@@ -36,21 +36,31 @@ Classify every candidate omission under one of four standard dispositions:
 
 ---
 
-## 3. Behavioral Confidence vs. Defect Confidence
+## 3. Behavioral Confidence, Verification & Remaining Uncertainty
 
 ### Behavioral Confidence
 Measures certainty that the software executes exactly as reported.
-- **High**: Verified by concrete code trace, unit test reproduction, or direct AST callgraph.
+- **High**: Verified by concrete code trace, unit test reproduction with normal-path control, or direct AST callgraph.
 - **Medium**: Inferred from structural conventions; dynamic runtime routing or reflection introduces slight uncertainty.
 - **Low**: Speculative path or unreachable dead code. (Suppress from audit report).
 
-### Defect Confidence (Disposition)
-Measures certainty that the observed behavior is an unwanted defect rather than an intentional tradeoff.
-- Code can be **High** Behavioral Confidence (we know 100% that S3 objects are not deleted on user cancel) but **Intent-Dependent** or **Accepted Behavior** (the team intentionally designed async monthly garbage collection).
+### Verification & Remaining Uncertainty Guardrails
+- **Normal-Path Controls**: High-impact findings should receive a reproduction and normal-path control where practical.
+- **Test Double Limitations**: Test doubles prove only that mocks were called; they do not prove live DB cascades or external queue consumers.
+- **Reporting Uncertainty Honestly**: If a live database or execution environment is unavailable during read-only audit, explicitly report that remaining uncertainty without inventing artificial certainty.
 
 ---
 
-## 4. Severity Calibration
+## 4. Candidate-Specific Calibration
+
+Confidence and counter-evidence are evaluated **per candidate**, never across an entire router or family:
+- A protected endpoint (`delete_user`) has High Behavioral Confidence that it is guarded.
+- An unprotected sibling endpoint (`purge_audit_logs`) in the same router has High Behavioral Confidence that it is exposed.
+- Never conflate candidate-level observations into a blanket family judgment.
+
+---
+
+## 5. Severity Calibration
 
 Ground severity strictly in realistic, uninflated operational consequences:
 
