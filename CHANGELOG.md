@@ -5,10 +5,18 @@ All notable changes to Missing Piece will be documented here.
 ## [1.2.0] - 2026-09-14
 
 ### Added
+- **Intent & Tradeoff Calibration**: Updated core audit methodology to distinguish genuine defects from intentional behavior and accepted tradeoffs:
+  - 4 calibrated dispositions (`Confirmed defect`, `Likely gap`, `Intent-dependent behavior`, `Accepted behavior`).
+  - Expectation source taxonomy (`Explicit requirement`, `Repository-supported expectation`, `Auditor assumption`) preventing unverified assumptions from being reported as defects.
+  - Active checks for intentional exceptions (administrative overrides, last-write-wins semantics, best-effort cleanup, external ownership).
+  - Dual confidence scoring separating Behavioral Confidence from Defect Confidence without uncalibrated decimals.
+  - Consequence precision rules prohibiting consequence inflation.
+  - Conditional recommendations and autonomous logging of unresolved intent questions.
 - Expanded suite to **12 specialized skills** with 2 new domain & framework adapters:
   - `missing-piece-database`: Database & migration auditor for schema drift, irreversible down migrations, cascade deletes, and unindexed foreign keys.
   - `missing-piece-fastapi`: FastAPI auditor for lifespan teardowns, session yield cleanups, background task exceptions, and router security guards.
-- **GitHub Actions CI Pipeline** (`.github/workflows/ci.yml`): Automated multi-skill validation and 43 benchmark evaluations on all pushes and pull requests.
+- **Cross-Registry Validator Parity** (`scripts/validate_skill.py`): Programmatically enforces that all skills in `skills/` are synchronized across `skills.sh.json`, `skills-lock.json`, `BUNDLE_MANIFEST.md`, and `.agents/skills/`.
+- **GitHub Actions CI Pipeline** (`.github/workflows/ci.yml`): Automated multi-skill validation and 43 benchmark evaluations on all pushes and pull requests (runs in 6s).
 - **Automated PR Diff Workflow Template** (`.github/workflows/missing-piece-pr.yml`): Reusable GitHub Actions workflow for auditing pull request diffs using `missing-piece-pr`.
 - **SARIF 2.1.0 Exporter** (`scripts/export_sarif.py`): Standalone converter exporting audit findings to SARIF for native display under GitHub's **Security > Code Scanning Alerts** tab.
 - **Project-Level Configuration System** (`.missingpiecerc.json`): Support for project-defined exclusion paths, external service counterpart boundaries, and custom suppression rules (`references/configuration.md`).
