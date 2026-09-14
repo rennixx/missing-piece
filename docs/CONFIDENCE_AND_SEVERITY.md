@@ -1,96 +1,64 @@
-# Confidence and Severity Model
+# Confidence, Disposition, and Severity Model
 
-Confidence answers:
+Missing Piece separates **Behavioral Confidence** from **Defect Confidence (Disposition)** and **Severity**:
 
-> **How sure are we that the piece is actually missing or incomplete?**
+1. **Behavioral Confidence**: *How sure are we that the code executes as observed?*
+2. **Defect Confidence (Disposition)**: *How sure are we that this behavior violates requirements and represents an undesirable defect rather than an intentional tradeoff?*
+3. **Severity**: *If this is indeed an unintended defect, what is the realistic, uninflated operational consequence?*
 
-Severity answers:
+Never merge these three independent dimensions. Avoid uncalibrated decimal gymnastics (e.g. 0.88 vs 0.94); use clear qualitative taxonomy backed by repository evidence.
 
-> **If it is missing, how bad could the consequence be?**
+---
 
-Never merge the two.
+## 1. Expectation Source Taxonomy
 
-## Confidence model
+Every expected behavior must be labeled with its authoritative source:
 
-Use a qualitative score backed by internal factors.
+1. **Explicit Requirement**:
+   - Documented policy, PRD, specification, ADR, user instruction, or schema contract.
+2. **Repository-Supported Expectation**:
+   - Consistent peer implementations, caller assumptions, test suites, or domain invariants across the repository.
+3. **Auditor Assumption**:
+   - Conventional industry best practice without clear repository support.
+   - *Strict Invariant:* **Never present auditor assumptions as confirmed defects.**
 
-### High confidence
+---
 
-Typical conditions:
-- trigger behavior is directly observed;
-- expectation is structurally strong;
-- search covered obvious and non-obvious implementations;
-- no meaningful counter-evidence;
-- relevant flow is reachable;
-- repository conventions strengthen the expectation.
+## 2. Disposition Taxonomy
 
-Suggested numeric representation: 0.85–1.00.
+| Disposition | Meaning | Required Evidence | Permitted Sources |
+|---|---|---|---|
+| **Confirmed Defect** | Demonstrated violation of an established requirement. | Direct code execution proves breach of explicit requirement or contract. | `Explicit requirement` only |
+| **Likely Gap** | Strong repository evidence supports the expectation, but intent remains unconfirmed. | Consistent peer pattern or domain invariant exists, but intent is not formally documented. | `Repository-supported expectation` |
+| **Intent-Dependent Behavior** | Validity depends on a product, architectural, or operational decision. | Observable behavior is clear, but alternative tradeoff interpretations (LWW, best-effort) are plausible. | `Repository-supported expectation` or `Auditor assumption` |
+| **Accepted Behavior** | Explicitly authorized, documented, or supported by intentional tradeoffs. | Code comments, ADR, admin flag, or architecture design proves behavior is deliberate. | Any source with verified tradeoff evidence |
 
-### Medium confidence
+---
 
-Typical conditions:
-- strong trigger but framework/provider behavior is uncertain;
-- counterpart may live outside visible repository;
-- search coverage is partial;
-- intent is ambiguous.
+## 3. Dual Confidence Model
 
-Suggested representation: 0.60–0.84.
+### Behavioral Confidence
+- **High**: Directly observed in reachable code, confirmed via callgraph or reproduction test.
+- **Medium**: Inferred from structural conventions; dynamic dispatch or reflection leaves slight uncertainty.
+- **Low**: Speculative path or unreachable code (suppressed from report).
 
-### Low confidence
+### Defect Confidence / Disposition Calibration
+- Behavioral execution certainty does NOT prove defect certainty.
+- A reproduction test can demonstrate 100% Behavioral Confidence that an S3 object is not deleted synchronously, while Defect Confidence remains **Accepted Behavior** or **Intent-Dependent** due to asynchronous orphan sweeping.
 
-Anything below 0.60.
+---
 
-Low-confidence findings are normally suppressed.
+## 4. Severity Calibration & Consequence Precision
 
-## Confidence factors
+Severity must reflect direct, uninflated operational consequences:
 
-A future deterministic model may weight:
-- trigger certainty: 0–1;
-- implication strength: 0–1;
-- search coverage: 0–1;
-- reachability certainty: 0–1;
-- convention consistency: 0–1;
-- counter-evidence penalty: 0–1;
-- external-ownership penalty: 0–1.
+- **Critical**: Irreversible catastrophic loss (active fund theft, auth bypass allowing unauthorized tenant mutation, unrecoverable data wipe).
+- **High**: Major functional breakage, persistent state corruption, unmonitored settlement failure, or deadlock.
+- **Medium**: Meaningful reliability or operational gap with bounded impact (resource leak, stuck job requiring reset, unhandled state transition).
+- **Low**: Minor edge-case asymmetry, non-critical telemetry gap, or cosmetic drift.
+- **Informational**: Intentional tradeoff or accepted behavior highlighted for architectural awareness.
 
-The exact formula is intentionally not frozen in v1. Calibration must come from benchmark results.
-
-## Severity
-
-### Critical
-Plausible consequence includes:
-- catastrophic data loss;
-- systemic unauthorized access;
-- irreversible financial corruption;
-- widespread destructive behavior.
-
-Use rarely.
-
-### High
-Likely major:
-- security boundary failure;
-- material financial error;
-- persistent data inconsistency;
-- unrecoverable operational failure;
-- major resource leak.
-
-### Medium
-Meaningful correctness/reliability defect with bounded impact.
-
-### Low
-Minor lifecycle, maintainability, or edge-case omission with limited impact.
-
-### Informational
-Suspicious asymmetry worth human confirmation, but no concrete defect established.
-
-## Reporting matrix
-
-Default visibility:
-
-| Confidence | Critical | High | Medium | Low | Info |
-|---|---:|---:|---:|---:|---:|
-| High | show | show | show | selective | selective |
-| Medium | show | show | selective | suppress | suppress |
-| Low | suppress* | suppress* | suppress | suppress | suppress |
-
-`*` A low-confidence catastrophic possibility may be listed under "Needs confirmation", never stated as fact.
+### Consequence Precision Rules
+- Duplicate activation ledger records $\neq$ doubled user balances.
+- An administrative maintenance override $\neq$ an authentication bypass.
+- Failed cleanup leaving an orphaned file $\neq$ permanent data retention or financial loss.

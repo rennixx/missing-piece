@@ -1,66 +1,56 @@
-# Counter-Evidence Checklist
+# Counter-Evidence & Intentional Exceptions Checklist
 
-Before emitting a finding, attempt to prove it wrong.
+Before reporting an omission as a defect, actively attempt to disprove absence and investigate intentional tradeoffs.
 
-## 1. Semantic alternatives
-Search synonyms and domain terminology.
+Do NOT invent hypothetical intent to excuse a gap. Require concrete repository evidence or mark the intent as **unresolved** (`Intent-dependent behavior`).
 
-## 2. Cross-cutting layers
-Check:
-- middleware;
-- decorators;
-- policies;
-- interceptors;
-- base classes;
-- hooks;
-- database triggers;
-- ORM cascades;
-- shared service wrappers.
+---
 
-## 3. Async paths
-Check:
-- emitted events;
-- queue jobs;
-- workers;
-- schedulers;
-- webhooks;
-- outbox/inbox patterns.
+## 1. Intentional Exception Patterns
 
-## 4. Framework behavior
-Determine whether the framework/runtime provides the behavior.
+Actively inspect whether the observed behavior represents an authorized tradeoff:
 
-## 5. External ownership
-Check whether:
-- payment provider;
-- identity provider;
-- storage lifecycle policy;
-- managed queue;
-- database;
-- infrastructure platform
+### A. Administrative & Emergency Overrides
+- **Pattern:** Direct mutation of status/entity bypassing normal validation, setup lifecycles, or state machine guards.
+- **Evidence Required:** Route decorated with admin role requirements (`has_role('admin')`, `@admin_required`), functions explicitly named `override_*`, `force_*`, `reconcile_*`, or comments indicating manual intervention tools.
+- **Consequence:** An administrative override is NOT an authentication bypass.
 
-owns the counterpart.
+### B. Concurrency & Last-Write-Wins (LWW) Semantics
+- **Pattern:** In-place state update without optimistic locking (`version`), distributed locks (`redlock`), or serialized queues.
+- **Evidence Required:** Explicit comments acknowledging LWW ("Last write wins", "stateless overwrite"), low-frequency entity mutations, or downstream idempotent consumers.
+- **Consequence:** Distinguish actual data corruption from acceptable overwrite races.
 
-If external behavior cannot be verified, state uncertainty.
+### C. Best-Effort Cleanup & Ephemeral Drop Semantics
+- **Pattern:** File deletion, cache eviction, or webhook delivery wrapped in `try/except: pass` or `catch(err) { logger.warn(...) }`.
+- **Evidence Required:** Cloud lifecycle rules (S3 bucket TTL, Redis maxmemory eviction), offline garbage collection scripts, or non-critical resource classification.
+- **Consequence:** Failed cleanup leaving an orphaned file does NOT establish permanent retention or actual financial loss.
 
-## 6. Intent
-Search:
-- ADRs;
-- README/docs;
-- comments near domain model;
-- tests;
-- migration notes.
+### D. External Ownership & Platform Boundaries
+- **Pattern:** Counterpart handler missing in local repository because ownership is delegated out-of-repo.
+- **Evidence Required:** Webhook dispatcher routed to external SQS/Kafka topic, managed cloud provider handling refunds/retries, or microservice split documented in architecture files.
+- **Check `.missingpiecerc.json`:** Confirm whether the trigger is listed under `externalBoundaries`.
 
-Intent does not override unsafe behavior automatically, but can invalidate a symmetry assumption.
+---
 
-## 7. Reachability
-Confirm the triggering code path is active/reachable.
+## 2. Structural Counter-Evidence Layers
 
-## 8. Configuration
-Behavior may be conditional or disabled.
+Check all cross-cutting layers before concluding absence:
 
-## 9. Tests
-Tests can reveal a counterpart or intended exception, but tests alone do not prove runtime wiring.
+1. **Cross-Cutting Interceptors**:
+   - Middleware, decorators, router dependencies (`Depends()`), base controller methods, or shared request handlers.
+2. **Asynchronous & Decoupled Consumers**:
+   - Transactional outbox tables, CDC streams (Debezium), message bus subscribers, background cron jobs, or worker queues.
+3. **Framework & Database Native Behaviors**:
+   - ORM cascade delete definitions (`ondelete="CASCADE"`, `dependent: :destroy`).
+   - Database triggers, unique constraints, foreign keys, or stored procedures.
+   - Framework auto-validation (Pydantic, Zod, Marshmallow).
+4. **Alternative Terminology & Synonyms**:
+   - Search domain synonyms (e.g. `cancel` vs `abort` vs `revoke` vs `terminate` vs `release` vs `unreserve`).
 
-## 10. Negative result quality
-Ask:
-Did I actually search the likely locations, or merely fail to see the behavior in the first file?
+---
+
+## 3. Disproof Standards
+
+- If credible evidence of intentional authorization is found $\to$ Disposition: `Accepted behavior`.
+- If evidence shows the counterpart exists elsewhere $\to$ Suppress candidate completely.
+- If counterpart is absent, plausible tradeoff reasons exist, but no repository proof supports intent $\to$ Disposition: `Intent-dependent behavior` and log an entry in `Unresolved Intent Questions`.

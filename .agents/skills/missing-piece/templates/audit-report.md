@@ -3,68 +3,79 @@
 ## Scope
 
 - **Mode:** standard | focused | change | deep | re-audit
+- **Coverage Boundary:** Bounded pass (explicit paths/domains listed below) — does NOT imply uninspected flows are defect-free.
 - **Repository/module:** `<path>`
 - **Focus:** `<feature/domain/all>`
 - **Exclusions:** `<vendor/build/etc>`
 
-## System Model
+## System Model & Intent Sources
 
-Summarize the observed capabilities, resource lifecycles, state transitions, external integrations, RBAC policies, async workers, and side effects.
+- **Observed Capabilities:** [Reconstructed capabilities, lifecycles, state flows, role boundaries]
+- **Documented Requirements:** [Explicit policies, specifications, ADRs, or user instructions identified]
+- **Operational Boundaries:** [External platforms, background queues, administrative paths]
 
 ## Finding Summary
 
-| ID | Title | Detector Family | Severity | Confidence |
-|---|---|---|---|---|
+| ID | Title | Detector Family | Expectation Source | Disposition | Severity | Behavioral Conf. |
+|---|---|---|---|---|---|---|
+| MP-XX-001 | [Specific Title] | MP-XX | Explicit / Repo-supported / Auditor assumption | Confirmed defect / Likely gap / Intent-dependent / Accepted | High | High |
 
 ## Findings
 
 ### MP-[FAMILY]-[NUM] — [Finding Title]
 
 - **Detector Family:** `MP-[FAMILY]`
-- **Severity:** `Critical | High | Medium | Low | Informational`
-- **Confidence:** `High | Medium | Low`
+- **Expectation Source:** `Explicit requirement` | `Repository-supported expectation` | `Auditor assumption`
+- **Disposition:** `Confirmed defect` | `Likely gap` | `Intent-dependent behavior` | `Accepted behavior`
+- **Severity:** `Critical` | `High` | `Medium` | `Low` | `Informational`
+- **Behavioral Confidence:** `High` | `Medium` | `Low` (Certainty that observed execution occurs)
 
 **Observed**  
-[Concrete observed evidence in repository code/schema that creates the expectation]
+[Concrete observed evidence in repository code/schema proving what the software actually does. Code and tests prove execution, not that behavior violates requirements.]
 
 **Expected**  
-[Specific counterpart, handler, endpoint, or guard expected to exist]
+[Specific counterpart, handler, endpoint, or guard expected to exist. Cites the exact source: explicit contract, repository peer pattern, or conventional assumption.]
+
+**Intent & Tradeoff Assessment**  
+[Active check for intentional exceptions: administrative overrides, last-write-wins semantics, best-effort cleanup, external ownership, or operational tradeoffs. Supporting repository evidence cited, or explicitly marked unresolved.]
 
 **Evidence searched**  
-[Broad search performed across symbols, callers, middleware, routes, events, configs]
+[Broad search across symbols, callers, middleware, routes, events, configs, and normal-path controls.]
 
 **Gap**  
-[Specific nature of absence, incompleteness, or unreachability]
+[Specific nature of absence, incompleteness, reachability break, or inconsistency.]
 
 **Why it matters**  
-[Concrete potential impact and consequence if unaddressed]
+[Precise, uninflated operational consequence. Distinguish direct effects from speculative damage (e.g., duplicate entries != double balance; admin override != auth bypass; orphaned file != financial loss).]
 
 **Evidence**  
 - `path/to/file:L10-L25` — [Context/Symbol]
 
 **Verification**  
-[Clear step or command for user to confirm or refute the omission claim]
+[Falsifiable reproduction check with normal-path control. State clearly: (1) what the test proves, (2) what is mocked, and (3) what remains unverified.]
 
-**Suggested direction**  
-[High-level remediation guidance]
+**Recommendation (Conditional)**  
+[Conditional guidance: explain which requirement or operational decision justifies a change. Do not prescribe architecture if a narrow remedy suffices.]
 
 ---
 
-## Needs Confirmation
+## Unresolved Intent Questions
 
-Potential omissions requiring human confirmation or external system verification (Medium/Low confidence).
+[Ambiguities collected autonomously during the audit where intent is not established by repository evidence. Posed to product/engineering owners for resolution.]
+- **Question 1:** `<file:line>` — [Does the business permit X tradeoff, or is Y required?]
 
 ## Coverage Summary
 
-### Inspected
-- [Paths, modules, or flows inspected]
+### Inspected (Bounded Pass)
+- [Explicit paths, modules, or flows evaluated]
 
 ### Not Verified / Excluded
-- [External services, unviewed files, or non-verifiable boundaries]
+- [External services, unviewed modules, or non-verifiable boundaries — no guarantee of correctness]
 
-## Suppressed Candidates
+## Suppressed / Accepted Candidates
 
-Candidates checked and disproved by counter-evidence search (with reason: `framework-provided`, `external-owner`, `intentional`, `duplicate`).
+[Candidates evaluated and disproved or confirmed as intentional/authorized tradeoffs with supporting evidence.]
+- `MP-XX-XXX`: [Description] — Disposition: `Accepted behavior` (Reason: `admin-override` | `best-effort` | `external-owner` | `documented-tradeoff`)
 
 ## Re-Audit Tracking
 

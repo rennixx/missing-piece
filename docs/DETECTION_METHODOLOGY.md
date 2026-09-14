@@ -1,136 +1,72 @@
 # Detection Methodology
 
-## Core equation
+## Core Invariant
 
 A Missing Piece finding is:
 
-**Observed evidence + implication rule - verified counterpart = candidate omission**
+$$\text{Observed Fact} + \text{Expectation Source} - \text{Verified Counterpart} - \text{Intentional Exceptions} = \text{Verified Omission}$$
 
-A candidate becomes a reportable finding only after counter-evidence search.
+Code and tests prove what the system does; they do NOT, by themselves, prove that behavior violates requirements. Never conflate execution with violation.
 
-## Phase 1 — Scope
+---
 
+## The 9-Phase Methodology
+
+### Phase 1 — Scope Definition
 Determine:
-- repository root;
-- requested feature/module if any;
-- languages/frameworks;
-- whether generated/vendor/build directories should be excluded;
-- whether the task is full audit, focused audit, or change audit.
+- Repository root, framework conventions, and build boundaries.
+- **Accurate Scope Preservation:** Explicitly define the audit as a *bounded pass*. A finding-free report certifies only the inspected boundary, never that unexamined flows are defect-free.
+- Load project-level configurations and suppressions from `.missingpiecerc.json`.
 
-## Phase 2 — Reconnaissance
-
+### Phase 2 — Reconnaissance & System Modeling
 Build an inventory of:
-- entry points;
-- domain entities;
-- mutations;
-- external integrations;
-- persistent resources;
-- state enums/statuses;
-- auth and roles;
-- async workers;
-- scheduled jobs;
-- infrastructure/configuration;
-- tests;
-- migrations;
-- documentation.
+- Entry points (routes, resolvers, message listeners).
+- Domain entities and state lifecycles.
+- Explicit documented requirements (PRDs, ADRs, user instructions).
+- Operational boundaries (external services, background queues, administrative paths).
 
-Do not report findings yet.
+### Phase 3 — Candidate Generation & Expectation Sourcing
+Generate candidate expectations ONLY from concrete repository facts. Categorize the source of every expected behavior:
+1. **Explicit requirement:** Documented policy, PRD, contract, or user instruction.
+2. **Repository-supported expectation:** Consistent peer callers, tests, or domain invariants.
+3. **Auditor assumption:** Conventional practice without clear repository support. (*Rule: Never present auditor assumptions as confirmed defects.*)
 
-## Phase 3 — Candidate generation
+### Phase 4 — Targeted Structural Search
+Search broadly to avoid naming or file location assumptions:
+- Symbols and semantic synonyms.
+- Routes, event handlers, middleware, decorators, and base classes.
+- Database triggers, ORM cascades, and migration definitions.
 
-Run detector families independently.
+### Phase 5 — Counter-Evidence & Intentional Exception Check
+Actively attempt to disprove the candidate omission and investigate intentional tradeoffs:
+- **Administrative overrides:** Route with admin roles intentionally bypassing standard wizards. (An admin override is NOT an auth bypass).
+- **Concurrency semantics:** Documented last-write-wins (LWW) tolerance.
+- **Best-effort cleanup:** Accepted orphan records/files relying on offline sweeps or cloud TTLs. (Failed cleanup != permanent retention or financial loss).
+- **External ownership:** Provider or external microservice owns the counterpart.
+- *Strict Rule:* Do NOT invent intent merely to dismiss a candidate. Require supporting repository evidence or mark intent as unresolved.
 
-A detector should generate an expectation because of repository evidence, not because "all apps should have X."
+### Phase 6 — Reachability & Completeness
+Confirm whether an existing counterpart is actually reachable:
+- Is it active or dead code?
+- Is it guarded correctly?
+- Is it wired only in test mocks?
+Report "incomplete/unwired" when the symbol exists but cannot be reached.
 
-Bad:
-> Every app should have audit logging.
+### Phase 7 — Dual Confidence & Disposition Calibration
+Separate execution certainty from defect certainty:
+- **Behavioral Confidence** (High / Medium / Low): Certainty that the code executes as observed.
+- **Disposition:**
+  - `Confirmed defect`: Demonstrated violation of an established requirement.
+  - `Likely gap`: Strong repository evidence supports the expectation, but intent remains unconfirmed.
+  - `Intent-dependent behavior`: Validity depends on a product or operational decision.
+  - `Accepted behavior`: Explicitly authorized or documented.
 
-Good:
-> This admin endpoint performs irreversible privileged financial adjustments, while adjacent privileged mutations emit audit events. No corresponding event was found for this path.
+### Phase 8 — Consequence Precision & Deduplication
+- State realistic, uninflated consequences without hyperbole.
+- Merge shared root causes into a single primary finding with downstream symptoms.
 
-## Phase 4 — Evidence search
-
-Search broadly enough to avoid filename assumptions:
-- symbol names;
-- semantic synonyms;
-- route references;
-- event handlers;
-- database triggers;
-- middleware;
-- framework hooks;
-- tests;
-- migration logic;
-- infrastructure;
-- comments/docs where they describe intentional behavior.
-
-## Phase 5 — Counter-evidence
-
-Actively try to disprove the candidate.
-
-Ask:
-- could the counterpart be implicit in a framework?
-- could a database constraint implement it?
-- could an external provider own the responsibility?
-- could the operation be intentionally irreversible?
-- could the function be unused/dead?
-- is another abstraction providing the behavior?
-- is the observed path test-only?
-- does configuration disable the feature?
-
-## Phase 6 — Reachability
-
-Presence is not enough.
-
-A counterpart may exist but be:
-- never called;
-- unreachable from the relevant flow;
-- guarded incorrectly;
-- wired only in tests;
-- applicable to a different resource;
-- stale/dead code.
-
-Report "incomplete/unwired" rather than "absent" when appropriate.
-
-## Phase 7 — Confidence
-
-Use:
-- quality of observed evidence;
-- strength of implication;
-- breadth of search;
-- amount of counter-evidence;
-- framework certainty;
-- reachability certainty.
-
-## Phase 8 — Deduplication
-
-Collapse findings when one root omission explains several symptoms.
-
-Example:
-- no cancellation timeout;
-- pending orders remain forever;
-- inventory reservations never release.
-
-If all are caused by one missing expiry flow, prefer one primary finding with consequences.
-
-## Phase 9 — Report
-
-Standard audits should surface:
-- all High-confidence Critical/High/Medium findings;
-- selected High-confidence Low findings;
-- Medium-confidence findings only when potentially significant;
-- no Low-confidence findings unless explicitly requested.
-
-## Finding validity test
-
-Before emitting a finding, answer YES to all:
-
-1. Can I point to the observed behavior that creates the expectation?
-2. Can I state the exact expected counterpart?
-3. Did I search multiple plausible implementations?
-4. Did I search for counter-evidence?
-5. Is absence/incompleteness still plausible?
-6. Can the user verify or falsify the claim?
-7. Is this about missing behavior rather than style?
-8. Is it non-duplicate?
-
-If any answer is NO, do not emit it as a normal finding.
+### Phase 9 — Autonomous Reporting & Conditional Recommendations
+- Deliver the report using `templates/audit-report.md`.
+- **Treat tests as evidence, not policy:** Include normal-path controls, what is proven, what is mocked, and what remains unverified.
+- **Conditional recommendations:** Explain which requirement justifies a change; prefer narrow remedies over prescribing new architecture.
+- **Collect unresolved intent questions:** Log open tradeoffs in the report without interrupting autonomous audit execution.

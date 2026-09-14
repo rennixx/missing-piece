@@ -28,6 +28,7 @@
 - `docs/WALKTHROUGH.md`
 - `docs/examples/example-async-recovery.md`
 - `docs/examples/example-false-positive.md`
+- `docs/examples/example-intent-and-tradeoffs.md`
 - `docs/examples/example-order-cancellation.md`
 - `skills/missing-piece/SKILL.md`
 - `skills/missing-piece/references/confidence.md`

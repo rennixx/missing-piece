@@ -2,96 +2,78 @@
 
 ## Goals
 
-Reports must be:
-- compact;
-- evidence-first;
-- stable enough for re-audits;
-- easy to paste into issues;
-- explicit about uncertainty.
+Missing Piece audit reports must be:
+- evidence-grounded and falsifiable;
+- explicit about expectation source and intent;
+- calibrated using qualitative dispositions instead of arbitrary numerical scores;
+- precise and uninflated regarding operational consequences;
+- clear about bounded scope limits (a clean report does not certify unexamined flows).
 
-## Finding ID
+---
 
-Format:
+## Finding Schema
 
-`MP-<FAMILY>-<NNN>`
+Each finding adheres to the following contract:
 
-Example:
+### 1. Title
+One concise, factual sentence naming the observed gap.
 
-`MP-LC-003`
+### 2. Header Metadata
+- **Detector Family:** `MP-[FAMILY]`
+- **Expectation Source:** `Explicit requirement` | `Repository-supported expectation` | `Auditor assumption`
+- **Disposition:** `Confirmed defect` | `Likely gap` | `Intent-dependent behavior` | `Accepted behavior`
+- **Severity:** `Critical` | `High` | `Medium` | `Low` | `Informational`
+- **Behavioral Confidence:** `High` | `Medium` | `Low`
 
-IDs are report-local in v1.
+### 3. Observed
+Concrete repository facts proving what happens in code or schemas. Code and tests prove execution, not that behavior violates requirements.
 
-## Finding schema
+### 4. Expected
+The counterpart expected, citing its authoritative origin (explicit contract, consistent peer pattern, or conventional assumption).
 
-Each finding contains:
+### 5. Intent & Tradeoff Assessment
+Active check for intentional exceptions (administrative overrides, last-write-wins, best-effort cleanup, external ownership). Supporting repository evidence cited, or marked unresolved.
 
-### Title
-One sentence naming the missing behavior.
+### 6. Evidence Searched
+Where and how the agent searched across symbols, callers, routes, configs, and normal-path controls.
 
-### Severity
-Critical / High / Medium / Low / Informational.
+### 7. Gap
+What could not be established (absence, incompleteness, reachability break, or inconsistency).
 
-### Confidence
-High / Medium / Low and optional numeric estimate.
+### 8. Why It Matters
+Grounded, uninflated consequence statement. Distinguish direct effects from speculative damage.
 
-### Observed
-Concrete repository facts that triggered the expectation.
+### 9. Evidence
+Exact file and line-range links (`[path/file.py:L10-L25](file:///...)`).
 
-### Expected
-The implied counterpart/invariant.
+### 10. Verification
+Falsifiable reproduction check with normal-path control. State clearly: (1) what is proven, (2) what is mocked, and (3) what remains unverified.
 
-### Evidence searched
-Where and how the agent looked.
+### 11. Recommendation (Conditional)
+Conditional remedy: specify which requirement justifies a change. Prefer narrow remedies over prescribing new architecture.
 
-### Gap
-What could not be established.
+---
 
-### Why it matters
-Concrete consequence, phrased conditionally when appropriate.
+## Consequence Precision Rules
 
-### Evidence
-File/symbol references.
+- ❌ Do NOT claim "infinite balance duplication" when an un-idempotent insert has downstream aggregate safeguards.
+- ❌ Do NOT claim "authentication bypass" for an internal administrative maintenance endpoint with separate role checks.
+- ❌ Do NOT claim "massive cloud bill / permanent financial loss" when a failed cleanup leaves an ephemeral temporary file.
 
-### Verification
-Fastest way for the maintainer to confirm/refute.
+---
 
-### Suggested direction
-Conceptual remediation only unless the user asks for code.
-
-## Report structure
+## Report Structure
 
 ```markdown
-# Missing Piece Audit
+# Missing Piece Audit Report
 
-## Scope
-## System model
-## Summary
+## Scope (Bounded Pass)
+## System Model & Intent Sources
+## Finding Summary Table
 ## Findings
-### MP-...
-## Needs confirmation
-## Coverage
-## Suppressed / not findings
-## Re-audit notes
+### MP-[FAMILY]-[NUM]
+## Unresolved Intent Questions
+## Coverage Summary (Inspected vs Excluded)
+## Suppressed / Accepted Candidates
+## Re-Audit Tracking
 ```
-
-## Summary table
-
-| ID | Finding | Severity | Confidence |
-|---|---|---|---|
-
-Do not put long evidence in the table.
-
-## Language rules
-
-Prefer:
-- "No reachable release path was found..."
-- "The repository appears to..."
-- "This may leave..."
-- "I searched X, Y, and Z..."
-
-Avoid:
-- "You forgot..."
-- "This definitely breaks..."
-- "Best practice says..."
-- "Every production app should..."
-- "Clearly..."
