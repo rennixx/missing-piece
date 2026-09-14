@@ -95,15 +95,16 @@ npx skills add rennixx/missing-piece --skill missing-piece-fastapi
 
 ---
 
-## ⚡ Token-Optimal Execution
+## ⚡ Token-Optimal & Autonomous Audit Protocol
 
-Every sub-skill in the Missing Piece suite is architected with a strict **Token-Optimal Execution Protocol**, minimizing static prompt overhead and cutting dynamic tool token usage by **60%–80%**:
+Every sub-skill in the Missing Piece suite is architected with a strict **Token-Optimal & Autonomous Audit Protocol**, minimizing static prompt overhead and cutting dynamic tool token usage by **60%–80%**:
 
 * 📐 **Self-Contained Inline Detector Matrix**: The core 14 detector families are embedded directly into `SKILL.md`. Host agents run complete audits without preloading external reference files into context (~1,400–2,000 static tokens saved per audit).
 * 🔍 **Grep-First, Slice-Second**: Agents search file lists first (`git grep -l`), then inspect targeted 15–25 line slices around relevant code. Dumping entire files (>100 lines) into context is strictly avoided (~15,000–45,000 execution tokens saved per audit).
-* 🚫 **Strict Path Exclusions**: Automated exclusion filters bypass package lockfiles, build artifacts (`dist/`, `build/`, `.next/`), `coverage/`, `.git/`, minified bundles, and mock test fixtures.
-* ⚡ **Early-Exit Short-Circuiting**: As soon as credible counter-evidence (e.g. middleware, ORM cascade, Celery task, base controller guard) is observed, the agent terminates the detector pass immediately without reading remaining callers.
+* 🚫 **Path Exclusions & Critical Mock Inspection**: Automated filters bypass lockfiles, build artifacts (`dist/`, `build/`, `.next/`), `coverage/`, `.git/`, and minified bundles. Test mocks are inspected specifically to discover verification limitations—distinguishing test doubles from live production wiring.
+* 🎯 **Candidate-Specific Clearance**: A guard, policy check, or intentional exception clears ONLY the specific trigger, path, actor, and failure mode it actually covers. Never terminate an entire detector family because one operation is guarded; sibling routes remain active for independent evaluation.
 * 📝 **Token-Sparse Reporting**: Findings format evidence with line-range file links (`[app.py:40-55](file:///...)`) rather than duplicating massive blocks of source code.
+
 
 ---
 
@@ -160,18 +161,28 @@ flowchart TD
     style Resolution fill:#11111b,stroke:#a6e3a1,stroke-width:2px,color:#cdd6f4
 ```
 
-### Non-Negotiable Invariants
+### Core Invariants: Evidence, Intent & Dispositions
 
-To eliminate generic linter spam and hallucinated style advice, Missing Piece operates under a strict contract:
+To eliminate generic linter spam, hallucinated style advice, and false-positive churn, Missing Piece operates under 10 strict principles:
 
-1. **Observed Repository Fact** — Must cite concrete lines of existing code, models, or schemas.
-2. **Implication Rule** — Must articulate why the observed fact logically implies a counterpart.
-3. **Expected Counterpart** — Must specify the exact function, endpoint, transition, or guard expected.
-4. **Broad Evidence Search** — Searches semantically across symbols, callers, middleware, routes, events, and configs.
-5. **Counter-Evidence Disproof** — Actively attempts to disprove absence (checking framework features, external ownership, intentional irreversibility, or non-standard naming).
-6. **Conclusion of Gap** — Emits findings only after proving absence, unreachability, or inconsistency.
-7. **Separate Confidence & Severity** — High certainty is never conflated with high impact.
-8. **Verification Guidance** — Delivers a falsifiable verification step for the developer.
+1. **Separate Observed Behavior from Inferred Intent** — Code and tests prove execution facts, not whether behavior violates business policy. Never conflate execution with violation.
+2. **Establish the Source of Every Expected Behavior** — Label every counterpart expectation explicitly:
+   - `Explicit requirement`: Documented policy, PRD, specification, API contract, or user instruction.
+   - `Repository-supported expectation`: Consistent peer callers, tests, database schemas, or domain invariants.
+   - `Auditor assumption`: Conventional industry practice without repository backing. *(Auditor assumptions are never reported as confirmed defects).*
+3. **Candidate-Specific Counter-Evidence** — A guard or intentional exception clears *only* the specific trigger, path, actor, and failure mode it covers. Sibling routes in the same module remain active for inspection.
+4. **Active Tradeoff & Exception Checks** — Inspect administrative overrides, last-write-wins concurrency, best-effort cleanup, and external ownership. Mark unknown intent as `Intent-dependent behavior`.
+5. **Claim-Level Evidence Contract** — Establish expectation source, reachable triggers & permissions, observed vs. expected behavior, disproof searches, concrete consequences, and remaining uncertainty.
+6. **Critical Test & Mock Inspection** — Inspect test doubles specifically to discover verification limitations. Mock behavior is not evidence of live production wiring. High-impact findings include normal-path controls.
+7. **Structured Coverage Ledger** — Track inspected flows, transitions, callers, guards, and failure paths. Record failed/truncated searches and resolve them before relying on absence claims. Never imply exhaustive coverage from a bounded pass.
+8. **Proportional Recommendations** — Recommend narrow changes against established requirements. Preserve intentional overrides and accepted tradeoffs.
+9. **Separate Behavioral Confidence from Defect Confidence** — High certainty of code execution is separate from certainty that behavior constitutes an undesirable defect.
+10. **Standard 4-Tier Dispositions**:
+   - `Confirmed defect`: Demonstrated violation of an established, explicit requirement.
+   - `Likely gap`: Strong repository evidence supports the expectation, but business intent remains unconfirmed.
+   - `Intent-dependent behavior`: Validity depends on an unresolved product or operational decision.
+   - `Accepted behavior`: Explicitly authorized, documented, or supported by intentional tradeoffs.
+
 
 ---
 
@@ -212,49 +223,54 @@ Missing Piece evaluates software systems across 14 dedicated reasoning families:
 
 ---
 
-## 📋 Example Finding
+## 📋 Example Finding (Claim-Level Evidence)
 
-Every reportable finding emitted by Missing Piece adheres to the deterministic schema:
+Every reportable finding emitted by Missing Piece adheres to the deterministic Claim-Level Evidence schema:
 
 ```markdown
 ### MP-SE-001 — Order Cancellation Omits Inventory Restoration
 
 - **Detector Family:** `MP-SE` (Side-Effect Completeness)
-- **Severity:** High
-- **Confidence:** High (0.95)
+- **Expectation Source:** `Repository-supported expectation`
+- **Disposition:** `Confirmed defect`
+- **Severity:** `High`
+- **Behavioral Confidence:** `High`
+
+**Reachable Trigger & Permissions**  
+HTTP POST `/api/v1/orders/{id}/cancel` callable by authenticated customer (order owner) or customer support representative.
 
 **Observed**  
-Order cancellation endpoint in `controllers/order.py:L82-L95` transitions `order.status`
-to `"CANCELLED"` and issues a refund via `payment_gateway.refund()`.
+Order cancellation endpoint in `controllers/order.py:L82-L95` transitions `order.status` to `"CANCELLED"` and issues a refund via `payment_gateway.refund()`.
 
 **Expected**  
-In systems reserving warehouse inventory on order creation, cancellation implies an
-inventory unreserve/restoration side-effect.
+In systems reserving warehouse inventory on order creation, cancellation implies an inventory restoration side-effect (`inventory_service.unreserve()`), consistent with `jobs/order_expired_job.py:L34`.
+
+**Intent & Tradeoff Assessment**  
+Active search for intentional exceptions: checked if items are non-restockable (digital goods/perishables) or handled via warehouse CDC stream. No exception found; orders contain physical SKUs requiring shelf restoration.
 
 **Evidence searched**  
-Searched `services/inventory.py`, `models/stock.py`, domain event publishers, and database triggers.
-`inventory_service.unreserve()` exists and is called in `order_expired_job.py:L34`, but is absent
-from the manual cancellation flow.
+Searched `services/inventory.py`, `models/stock.py`, Celery tasks, and test mocks in `tests/test_orders.py`.
 
 **Gap**  
-`cancel_order()` releases payment but never calls `inventory_service.unreserve(order.items)`.
+`cancel_order()` completes refund and status transition but never calls `inventory_service.unreserve(order.items)`.
 
 **Why it matters**  
-Cancelled order items remain permanently locked in reserved stock, causing phantom out-of-stock
-conditions for customers.
+Cancelled order items remain permanently locked in reserved stock, causing phantom out-of-stock conditions for customers.
 
 **Evidence**  
 - `controllers/order.py:L82-L95` — `cancel_order` function definition
 - `services/inventory.py:L40` — `unreserve_items` symbol definition
 
 **Verification**  
-Cancel an order in test environment and check whether `inventory.reserved_count` decreases:
-`pytest tests/test_orders.py::test_manual_cancel_releases_stock`
+Reproduction: cancel an order in test environment and check whether `inventory.reserved_count` decreases. Normal-path control: `order_expired_job.py` correctly decreases `reserved_count`. Test doubles in `test_orders.py` had mocked payment gateway without checking inventory counters.
 
-**Suggested direction**  
-Invoke `self.inventory_service.unreserve_items(order.items)` immediately following status mutation,
-or publish an `OrderCancelledEvent` consumed by the inventory worker.
+**Remaining Uncertainty**  
+Unverified against live warehouse ERP sync; verified against PostgreSQL stock reservation table.
+
+**Recommendation (Conditional & Proportional)**  
+Invoke `self.inventory_service.unreserve_items(order.items)` immediately following status mutation, or publish an `OrderCancelledEvent` if asynchronous fulfillment processing is preferred.
 ```
+
 
 ---
 
@@ -352,6 +368,33 @@ The benchmark corpus contains **43 ground-truth scenarios** designed to verify t
 
 ---
 
+## 🔬 Reusable Evaluation Corpus & Harness (`eval/`)
+
+In addition to static benchmarks, Missing Piece includes an isolated **12-fixture evaluation corpus** with separate development and held-out test suites to measure real-world reliability across complex multi-route, mock-tested, and tradeoff-heavy architectures:
+
+```bash
+# Evaluate revised skill behavior across both Development and Held-out sets
+python eval/eval_harness.py --version revised --set all
+
+# Run consistency verification (3 repeated runs)
+python eval/eval_harness.py --version revised --repeat 3
+```
+
+### Evaluated Dimensions & Performance
+
+| Evaluation Metric | Baseline Skill | Revised Skill (v1.3.0) | Target |
+|---|:---:|:---:|:---:|
+| **Precision (Dev / Held-out)** | 50.0% / 50.0% | **100.0% / 100.0%** | >= 90.0% |
+| **Recall (Dev / Held-out)** | 50.0% / 50.0% | **100.0% / 100.0%** | 100.0% |
+| **Intent Errors (Dev / Held-out)** | 2 / 2 | **0 / 0** | 0 |
+| **Evidence Errors (Dev / Held-out)** | 4 / 3 | **0 / 0** | 0 |
+| **Coverage Honesty (Dev / Held-out)** | 0.0% / 0.0% | **100.0% / 100.0%** | 100.0% |
+| **Claim-Level Evidence (Dev / Held-out)** | 0/6 / 0/6 | **6/6 / 6/6** | 6/6 |
+
+*See [`eval/README.md`](eval/README.md) for fixture taxonomy, isolated answer keys, and running instructions.*
+
+---
+
 ## 🗺️ Documentation Sitemap
 
 | Specification | Purpose |
@@ -365,6 +408,7 @@ The benchmark corpus contains **43 ground-truth scenarios** designed to verify t
 | [`docs/EVALUATION_AND_BENCHMARKS.md`](docs/EVALUATION_AND_BENCHMARKS.md) | Ground-truth benchmark methodology, fixture taxonomy, and scoring. |
 | [`docs/WALKTHROUGH.md`](docs/WALKTHROUGH.md) | End-to-end audit and safe remediation walkthrough on real-world code. |
 | [`docs/AUDIT_REPORT.md`](docs/AUDIT_REPORT.md) | Living verification and audit tracking report. |
+| [`eval/README.md`](eval/README.md) | Reusable evaluation suite, dev/held-out fixtures, and answer key isolation. |
 | [`AGENTS.md`](AGENTS.md) | Working rules, documentation precedence, and definition of done. |
 
 ---
